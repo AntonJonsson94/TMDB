@@ -2,6 +2,7 @@ const submitButton = document.querySelector("#submit") as HTMLElement;
 submitButton.innerText = "Search";
 const trendingTab = document.querySelector("#trending") as HTMLElement;
 const maincontentArea = document.querySelector("#main-content") as HTMLElement;
+const watchListArea = document.querySelector("#watchlist-tab") as HTMLElement;
 
 const searchMovieUrl = "https://api.themoviedb.org/3/search/movie";
 const apiKey = "?api_key=aa5ee409d52ded21ba46b85a22480907";
@@ -37,8 +38,10 @@ const trendingMovies: trendingMovie[] = [];
 const userWatchList: watchList[] = [{ poster_path: "hello", title: "string" }];
 
 async function getMovie() {
+    searchedMovies.length = 0;
     const inputField = document.querySelector("#input") as HTMLInputElement;
     const searchedMovie = inputField.value;
+
     const response = await fetch(
         searchMovieUrl + apiKey + queryUrl + searchedMovie
     );
@@ -132,14 +135,19 @@ function printTrendingMovies() {
         trendingCard.appendChild(movieRatingCard);
         trendingCard.appendChild(goToMoviePageButton);
         trendingCard.appendChild(addToWatchlistButton);
+
+        addToWatchlistButton.addEventListener("click", () => {
+            console.log();
+            addMovie(i);
+        });
     }
 }
 getTrendingMovies();
 
 function printSearchResults() {
-    maincontentArea.innerHTML = "";
     const searchedMovieCard = document.createElement("section") as HTMLElement;
     searchedMovieCard.setAttribute("id", "searchedMovieCard");
+    maincontentArea.innerHTML = "";
 
     for (let i: number = 0; i < searchedMovies.length; i++) {
         const searchedPosterCard = new Image();
@@ -161,5 +169,26 @@ function printSearchResults() {
         searchedMovieCard.appendChild(searchedPosterCard);
         searchedMovieCard.appendChild(movieTitleCard);
         searchedMovieCard.appendChild(movieRatingCard);
+    }
+}
+function addMovie(index: number) {
+    const addedMovie = userWatchList[index];
+    const watchListCard = document.createElement("section") as HTMLElement;
+
+    for (let i: number = 0; i < userWatchList.length; i++) {
+        const watchListPosterCard = new Image();
+        watchListPosterCard.setAttribute("class", "watchlist-poster");
+        watchListPosterCard.src = imageUrl + trendingMovies[index].poster_path;
+        const watchListMovieTitle = document.createElement(
+            "p"
+        ) as HTMLParagraphElement;
+        watchListMovieTitle.innerHTML = trendingMovies[index].title;
+
+        const watchListRatingCard = document.createElement(
+            "p"
+        ) as HTMLParagraphElement;
+        watchListRatingCard.innerHTML = trendingMovies[index].rating.toString();
+
+        watchListCard;
     }
 }
