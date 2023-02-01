@@ -1,0 +1,50 @@
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="stylesheet" href="scss/main.scss" />
+        <script defer src="./ts/app.ts"></script>
+        <title>Document</title>
+    </head>
+    
+    <body>
+        <main class="flex">
+            <nav class="nav-bar">
+                <p class="nav-menu" id="home">Home</p>
+                <p class="nav-menu" id="top-movies">Top Movies</p>
+                <p class="nav-menu" id="top-tv">Top TV Shows</p>
+
+                <form class="form">
+                    <input
+                        type="text"
+                        placeholder="search for movie"
+                        class="submit"
+                        id="input"
+                    />
+                    <input
+                        type="submit"
+                        class="submit-btn"
+                        value="Search"
+                        id="submit"
+                        onclick="toggleVisibility()"
+                    />
+                </form>
+
+                <p class="nav-menu" id="watchlist-button">Your Watchlist</p>
+            </nav>
+        </main>
+        <main class="grid">
+            <section class="content" id="trending-tab">
+                <h5 class="header">Trending</h5>
+                <sectionid id="trending"></section>
+            </section>
+
+            <section class="content" id="main-content">Hello</section>
+
+            <section class="content" id="watchlist-tab">
+                <h5 class="header">Your WatchList</h5>
+            </section>
+        </main>
+    </body>
+</html>
