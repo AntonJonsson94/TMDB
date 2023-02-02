@@ -117,9 +117,14 @@ body{
     }
     #main-content{
         background-color: white;
-
+       
         .searched-movie-poster{
             @include posterDesign();
+            
+        }
+        .searched-movie-poster:hover{
+                transform: scale(1.1);
+            transition-duration: 500ms;
             
         }
 
@@ -169,6 +174,14 @@ body{
   
 
 @media(max-width: 400px){
+    #main-content{
+        width: 186%;
+        height: 80vh;
+        #searchedMovieCard{
+            padding-top: 10vh;
+            
+        }
+    }
     #trending-tab, #watchlist-tab, #top-tv, #top-movies, #home {
         display: none;
     }
@@ -179,6 +192,7 @@ body{
         height: 5rem;
     
     }
+
 }
 #input{
 height: 1000px;
