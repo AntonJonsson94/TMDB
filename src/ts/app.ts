@@ -3,15 +3,18 @@ submitButton.innerText = "Search";
 const trendingTab = document.querySelector("#trending") as HTMLElement;
 const maincontentArea = document.querySelector("#main-content") as HTMLElement;
 const watchListArea = document.querySelector("#watchlist-tab") as HTMLElement;
+const watchListButton = document.querySelector(
+    "#watchlist-button"
+) as HTMLParagraphElement;
+const topMoviesButton = document.querySelector(
+    "#top-movies"
+) as HTMLParagraphElement;
 
+const topMoviesUrl = "https://api.themoviedb.org/3/movie/top_rated";
 const searchMovieUrl = "https://api.themoviedb.org/3/search/movie";
 const apiKey = "?api_key=aa5ee409d52ded21ba46b85a22480907";
 const queryUrl = "&query=";
 const imageUrl = "https://image.tmdb.org/t/p/w500//";
-const watchListButton = document.querySelector(
-    "#watchlist-button"
-) as HTMLParagraphElement;
-
 const trendingUrl =
     "https://api.themoviedb.org/3/trending/all/day?api_key=aa5ee409d52ded21ba46b85a22480907";
 
@@ -33,8 +36,13 @@ type watchList = {
     title: string;
     rating: number;
 };
-
+type topMovie = {
+    poster_path: string;
+    title: string;
+    rating: number;
+};
 const searchedMovies: movie[] = [];
+const topMovies: topMovie[] = [];
 const trendingMovies: trendingMovie[] = [];
 const userWatchList: watchList[] = [];
 
@@ -112,10 +120,6 @@ function printTrendingMovies() {
         movieRatingCard.innerHTML = `Rating: ${trendingMovies[
             i
         ].rating.toString()}`;
-
-        const goToMoviePageButton = document.createElement(
-            "input"
-        ) as HTMLInputElement;
 
         const addToWatchlistButton = document.createElement(
             "input"
@@ -223,5 +227,93 @@ function printSearchResults() {
         searchedMovieCard.appendChild(searchedPosterCard);
         searchedMovieCard.appendChild(movieTitleCard);
         searchedMovieCard.appendChild(movieRatingCard);
+    }
+}
+
+async function getTopMovies() {
+    const response = await fetch(topMoviesUrl + apiKey);
+    const data = await response.json();
+
+    for (let i = 0; i < data.results.length; i++) {
+        const nameVariants = data.results[i].title ?? data.results[i].name;
+
+        const roundedNumber = data.results[i].vote_average;
+
+        const newtopMovies: topMovie = {
+            poster_path: data.results[i].poster_path,
+            title: nameVariants,
+            rating: roundedNumber.toFixed(1),
+        };
+        topMovies.push(newtopMovies);
+        printTopMovies();
+    }
+}
+topMoviesButton.addEventListener("click", (event) => {
+    event.preventDefault();
+    getTopMovies();
+});
+
+function printTopMovies() {
+    const topMoviesCard = document.createElement("section") as HTMLElement;
+    topMoviesCard.setAttribute("id", "top-movie-card");
+    maincontentArea.innerHTML = "";
+
+    for (let i: number = 0; i < topMovies.length; i++) {
+        const topMoviePosterCard = new Image();
+        topMoviePosterCard.setAttribute("class", "top-movie-poster");
+        topMoviePosterCard.src = imageUrl + topMovies[i].poster_path;
+
+        const movieTitleCard = document.createElement(
+            "p"
+        ) as HTMLParagraphElement;
+        movieTitleCard.setAttribute("class", "searched-movie-title");
+        movieTitleCard.innerHTML = topMovies[i].title;
+        const movieRatingCard = document.createElement(
+            "p"
+        ) as HTMLParagraphElement;
+        movieRatingCard.innerHTML = `Rating: ${topMovies[i].rating.toString()}`;
+
+        maincontentArea.appendChild(topMoviesCard);
+        topMoviesCard.appendChild(topMoviePosterCard);
+        topMoviesCard.appendChild(movieTitleCard);
+        topMoviesCard.appendChild(movieRatingCard);
+    }
+}
+
+function printMoviePage() {
+    const moviePageCard = document.createElement("section") as HTMLElement;
+    moviePageCard.setAttribute("id", "moviePageCard");
+    maincontentArea.innerHTML = "";
+
+    for (let i: number = 0; i < topMovies.length; i++) {
+        const topMoviesPosterCard = new Image();
+        topMoviesPosterCard.setAttribute("class", "top-movies-poster");
+        topMoviesPosterCard.src = imageUrl + topMovies[i].poster_path;
+        const movieTitleCard = document.createElement(
+            "p"
+        ) as HTMLParagraphElement;
+        movieTitleCard.setAttribute("class", "top-movie-title");
+        movieTitleCard.innerHTML = topMovies[i].title;
+        const movieRatingCard = document.createElement(
+            "p"
+        ) as HTMLParagraphElement;
+        movieRatingCard.innerHTML = `Rating: ${topMovies[i].rating.toString()}`;
+
+        const movieReleaseDate = document.createElement(
+            "p"
+        ) as HTMLParagraphElement;
+        movieReleaseDate.innerHTML = topMovies[i].release.toString();
+
+        const movieOverview = document.createElement(
+            "p"
+        ) as HTMLParagraphElement;
+        movieOverview.innerHTML = topMovies[i].overview;
+
+        maincontentArea.appendChild(moviePageCard);
+        moviePageCard.appendChild(topMoviesPosterCard);
+        moviePageCard.appendChild(movieTitleCard);
+        moviePageCard.appendChild(movieRatingCard);
+        moviePageCard.appendChild(movieReleaseDate);
+        moviePageCard.appendChild(movieOverview);
     }
 }
