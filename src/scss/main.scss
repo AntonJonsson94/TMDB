@@ -1,3 +1,6 @@
+
+
+
 @mixin flexCenter(){
     display: flex; 
     justify-content: center;
@@ -66,6 +69,7 @@ body{
     
     @include gridLayout();
     width: fit-content;
+    text-align: center;
     
     .content{
         background: black;
@@ -73,11 +77,10 @@ body{
         border-radius: 10px;
         padding: 50px;
         border: 1px solid black;
-        height: 70rem;
+        height: 75vh;
         justify-content: space-between;
         scroll-behavior: smooth;
         overflow-y: scroll;
-        text-align: center;
         
         
         
@@ -88,7 +91,8 @@ body{
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         font-size: xx-large;
-        text-align: center;
+        position: relative;
+        right: 15;
         
     
     }
@@ -101,10 +105,10 @@ body{
         background: rgb(0, 0, 0);
         color: white;
         width: fit-content;
-        padding-top: 50;
+        padding-top: 20;
         padding-left: 10;
         padding-right: 10;
-        padding-top: 50;
+        padding-top: 20;
         
     }
         .trending-poster{
@@ -121,6 +125,15 @@ body{
 
 
     }
+    #watchlist-tab{
+        color: white;
+        .watchlist-poster{
+            @include posterDesign();
+            
+        }
+
+    }
+
     }
     
     

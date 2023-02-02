@@ -31,11 +31,12 @@ type trendingMovie = {
 type watchList = {
     poster_path: string;
     title: string;
+    rating: number;
 };
 
 const searchedMovies: movie[] = [];
 const trendingMovies: trendingMovie[] = [];
-const userWatchList: watchList[] = [{ poster_path: "hello", title: "string" }];
+const userWatchList: watchList[] = [];
 
 async function getMovie() {
     searchedMovies.length = 0;
@@ -90,7 +91,6 @@ async function getTrendingMovies() {
         };
         trendingMovies.push(newTrendingMovie);
         printTrendingMovies();
-        console.log(newTrendingMovie);
     }
 }
 
@@ -137,12 +137,44 @@ function printTrendingMovies() {
         trendingCard.appendChild(addToWatchlistButton);
 
         addToWatchlistButton.addEventListener("click", () => {
-            console.log();
-            addMovie(i);
+            const index = trendingMovies[i];
+            addMovie(index);
         });
     }
 }
 getTrendingMovies();
+
+function addMovie(index) {
+    const addedWatchListMovie: watchList = index;
+
+    if (
+        userWatchList.find((movie) => movie.title === addedWatchListMovie.title)
+    ) {
+        alert(`${addedWatchListMovie.title} already exists in your watchlist!`);
+        return;
+    }
+    const watchListCard = document.createElement("section") as HTMLElement;
+    watchListCard.innerHTML = "";
+    const watchListPosterCard = new Image();
+    watchListPosterCard.setAttribute("class", "watchlist-poster");
+    watchListPosterCard.src = imageUrl + addedWatchListMovie.poster_path;
+    const watchListMovieTitle = document.createElement(
+        "p"
+    ) as HTMLParagraphElement;
+    watchListMovieTitle.innerHTML = addedWatchListMovie.title;
+
+    const watchListRatingCard = document.createElement(
+        "p"
+    ) as HTMLParagraphElement;
+    watchListRatingCard.innerHTML = addedWatchListMovie.rating.toString();
+
+    watchListArea.appendChild(watchListCard);
+    watchListCard.appendChild(watchListPosterCard);
+    watchListArea.appendChild(watchListMovieTitle);
+    watchListArea.appendChild(watchListRatingCard);
+
+    userWatchList.push(addedWatchListMovie);
+}
 
 function printSearchResults() {
     const searchedMovieCard = document.createElement("section") as HTMLElement;
@@ -169,26 +201,5 @@ function printSearchResults() {
         searchedMovieCard.appendChild(searchedPosterCard);
         searchedMovieCard.appendChild(movieTitleCard);
         searchedMovieCard.appendChild(movieRatingCard);
-    }
-}
-function addMovie(index: number) {
-    const addedMovie = userWatchList[index];
-    const watchListCard = document.createElement("section") as HTMLElement;
-
-    for (let i: number = 0; i < userWatchList.length; i++) {
-        const watchListPosterCard = new Image();
-        watchListPosterCard.setAttribute("class", "watchlist-poster");
-        watchListPosterCard.src = imageUrl + trendingMovies[index].poster_path;
-        const watchListMovieTitle = document.createElement(
-            "p"
-        ) as HTMLParagraphElement;
-        watchListMovieTitle.innerHTML = trendingMovies[index].title;
-
-        const watchListRatingCard = document.createElement(
-            "p"
-        ) as HTMLParagraphElement;
-        watchListRatingCard.innerHTML = trendingMovies[index].rating.toString();
-
-        watchListCard;
     }
 }
