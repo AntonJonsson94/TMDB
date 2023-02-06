@@ -11,6 +11,7 @@ const topMoviesButton = document.querySelector(
 ) as HTMLParagraphElement;
 
 const topMoviesUrl = "https://api.themoviedb.org/3/movie/top_rated";
+const nowPlayingUrl = "https://api.themoviedb.org/3/movie/now_playing";
 const searchMovieUrl = "https://api.themoviedb.org/3/search/movie";
 const apiKey = "?api_key=aa5ee409d52ded21ba46b85a22480907";
 const queryUrl = "&query=";
@@ -22,29 +23,32 @@ type movie = {
     poster_path: string;
     title: string;
     rating: number;
-    release: number;
-    overview: string;
-};
-type trendingMovie = {
-    poster_path: string;
-    title: string;
-    rating: number;
+    release?: number;
+    overview?: string;
 };
 
-type watchList = {
-    poster_path: string;
-    title: string;
-    rating: number;
-};
-type topMovie = {
-    poster_path: string;
-    title: string;
-    rating: number;
-};
 const searchedMovies: movie[] = [];
-const topMovies: topMovie[] = [];
-const trendingMovies: trendingMovie[] = [];
-const userWatchList: watchList[] = [];
+const topMovies: movie[] = [];
+const trendingMovies: movie[] = [];
+const userWatchList: movie[] = [];
+const nowPlayingMovies: movie[] = [];
+
+async function getNowPlayingMovies() {
+    const response = await fetch(nowPlayingUrl + apiKey);
+    const data = await response.json();
+
+    for (let i = 0; i < data.results.length; i++) {
+        const checkNameVariant = data.results[i].title ?? data.results[i].name;
+        const roundedNumber = data.results[i].vote_average;
+
+        const newNowPlayingMovies: movie = {
+            poster_path: data.results[i].poster_path,
+            title: checkNameVariant,
+            rating: roundedNumber.toFixed(1),
+        };
+        nowPlayingMovies.push(newNowPlayingMovies);
+    }
+}
 
 async function getMovie() {
     searchedMovies.length = 0;
@@ -92,7 +96,7 @@ async function getTrendingMovies() {
         const checkNameVariant = data.results[i].title ?? data.results[i].name;
         const roundedNumber = data.results[i].vote_average;
 
-        const newTrendingMovie: trendingMovie = {
+        const newTrendingMovie: movie = {
             poster_path: data.results[i].poster_path,
             title: checkNameVariant,
             rating: roundedNumber.toFixed(1),
@@ -145,8 +149,7 @@ function printTrendingMovies() {
 }
 getTrendingMovies();
 
-function addMovie(index) {
-    const addedWatchListMovie: watchList = index;
+function addMovie(addedWatchListMovie: movie) {
     if (
         userWatchList.find((movie) => movie.title === addedWatchListMovie.title)
     ) {
@@ -154,51 +157,59 @@ function addMovie(index) {
         return;
     }
     userWatchList.push(addedWatchListMovie);
-    printWatchList(index);
+    printWatchList();
 }
 
-function printWatchList(index) {
-    const addedMovie: watchList = index;
+function printWatchList() {
+    watchListArea.innerHTML = "";
 
-    let watchListCard = document.createElement("section") as HTMLElement;
-    watchListCard.setAttribute("class", "watchlist-card");
-    watchListCard.innerHTML = "";
-
+    //för varje film i listan
     for (let i = 0; i < userWatchList.length; i++) {
+        const currentMovie = userWatchList[i];
+        //skapa kort och sätt klass och id
+        let watchListCard = document.createElement("section") as HTMLElement;
+        watchListCard.setAttribute("class", "watchlist-card");
         watchListCard.id = "movie" + i;
+
+        //skapa bild och sätt klass och src
+        const watchListPosterCard = new Image();
+        watchListPosterCard.setAttribute("class", "watchlist-poster");
+        watchListPosterCard.src = imageUrl + currentMovie.poster_path;
+
+        //skapa titel
+        const watchListMovieTitle = document.createElement(
+            "p"
+        ) as HTMLParagraphElement;
+        watchListMovieTitle.innerHTML = currentMovie.title;
+        const watchListRatingCard = document.createElement(
+            "p"
+        ) as HTMLParagraphElement;
+        watchListRatingCard.innerHTML = currentMovie.rating.toString();
+        const watchlistRemoveButton = document.createElement(
+            "input"
+        ) as HTMLInputElement;
+
+        watchlistRemoveButton.setAttribute("value", "Remove");
+        watchlistRemoveButton.setAttribute("type", "submit");
+        watchlistRemoveButton.setAttribute("class", "remove-watchlist");
+
+        watchListArea.appendChild(watchListCard);
+        watchListCard.appendChild(watchListPosterCard);
+        watchListCard.appendChild(watchListMovieTitle);
+        watchListCard.appendChild(watchListRatingCard);
+        watchListCard.appendChild(watchlistRemoveButton);
+
+        watchlistRemoveButton.addEventListener("click", (event) => {
+            event.preventDefault();
+
+            const movieIndex = userWatchList.findIndex(
+                (movie) => movie.title === currentMovie.title
+            );
+
+            userWatchList.splice(movieIndex, 1);
+            watchListArea.removeChild(watchListCard);
+        });
     }
-
-    const watchListPosterCard = new Image();
-    watchListPosterCard.setAttribute("class", "watchlist-poster");
-    watchListPosterCard.src = imageUrl + addedMovie.poster_path;
-    const watchListMovieTitle = document.createElement(
-        "p"
-    ) as HTMLParagraphElement;
-    watchListMovieTitle.innerHTML = addedMovie.title;
-
-    const watchListRatingCard = document.createElement(
-        "p"
-    ) as HTMLParagraphElement;
-    watchListRatingCard.innerHTML = addedMovie.rating.toString();
-    const watchlistRemoveButton = document.createElement(
-        "input"
-    ) as HTMLInputElement;
-
-    watchlistRemoveButton.setAttribute("value", "Remove");
-    watchlistRemoveButton.setAttribute("type", "submit");
-    watchlistRemoveButton.setAttribute("class", "remove-watchlist");
-
-    watchListArea.appendChild(watchListCard);
-    watchListCard.appendChild(watchListPosterCard);
-    watchListCard.appendChild(watchListMovieTitle);
-    watchListCard.appendChild(watchListRatingCard);
-    watchListCard.appendChild(watchlistRemoveButton);
-
-    watchlistRemoveButton.addEventListener("click", (event) => {
-        event.preventDefault();
-        userWatchList.splice(index, 1);
-        watchListArea.removeChild(watchListCard);
-    });
 }
 
 function printSearchResults() {
@@ -239,7 +250,7 @@ async function getTopMovies() {
 
         const roundedNumber = data.results[i].vote_average;
 
-        const newtopMovies: topMovie = {
+        const newtopMovies: movie = {
             poster_path: data.results[i].poster_path,
             title: nameVariants,
             rating: roundedNumber.toFixed(1),
