@@ -3,6 +3,14 @@ submitButton.innerText = "Search";
 const trendingTab = document.querySelector("#trending") as HTMLElement;
 const maincontentArea = document.querySelector("#main-content") as HTMLElement;
 const watchListArea = document.querySelector("#watchlist-tab") as HTMLElement;
+const watchlistTab = document.querySelector("#watchlist") as HTMLElement;
+const homeButton = document.querySelector("#home") as HTMLElement;
+
+homeButton.addEventListener("click", (event) => {
+    event.preventDefault();
+    getNowPlayingMovies();
+});
+
 const watchListButton = document.querySelector(
     "#watchlist-button"
 ) as HTMLParagraphElement;
@@ -32,6 +40,22 @@ const topMovies: movie[] = [];
 const trendingMovies: movie[] = [];
 const userWatchList: movie[] = [];
 const nowPlayingMovies: movie[] = [];
+let moviePage: movie[] = [];
+
+// function textColorByValue(value: movie["rating"]){
+
+//     let textColor: string;
+//     const rating =value;
+
+//     if (rating > 7) {
+//       textColor = 'green';
+//     } else if (rating < 6) {
+//       textColor = 'yellow';
+//     } else {
+//       textColor = 'red';
+//     }
+
+// }
 
 async function getNowPlayingMovies() {
     const response = await fetch(nowPlayingUrl + apiKey);
@@ -47,10 +71,12 @@ async function getNowPlayingMovies() {
             rating: roundedNumber.toFixed(1),
         };
         nowPlayingMovies.push(newNowPlayingMovies);
+        printMovieNowPlayingMovies();
     }
 }
+getNowPlayingMovies();
 
-async function getMovie() {
+async function getSearchedMovie() {
     searchedMovies.length = 0;
     const inputField = document.querySelector("#input") as HTMLInputElement;
     const searchedMovie = inputField.value;
@@ -66,14 +92,11 @@ async function getMovie() {
             data.results[i].release_date ?? data.results[i].first_air_date;
         const roundedNumber = data.results[i].vote_average;
 
-        const resultsCard = document.createElement("section") as HTMLElement;
-        resultsCard.innerHTML = "Search results for:" + searchedMovie;
-
         const newSearchedMovies: movie = {
             poster_path: data.results[i].poster_path,
             title: nameVariants,
             rating: roundedNumber.toFixed(1),
-            release: releaseDateNameVariants,
+            release: releaseDateNameVariants.toString(),
             overview: data.results[i].overview,
         };
         searchedMovies.push(newSearchedMovies);
@@ -85,7 +108,7 @@ async function getMovie() {
 submitButton.addEventListener("click", (event) => {
     event.preventDefault();
 
-    getMovie();
+    getSearchedMovie();
 });
 
 async function getTrendingMovies() {
@@ -161,7 +184,7 @@ function addMovie(addedWatchListMovie: movie) {
 }
 
 function printWatchList() {
-    watchListArea.innerHTML = "";
+    watchlistTab.innerHTML = "";
 
     //för varje film i listan
     for (let i = 0; i < userWatchList.length; i++) {
@@ -193,7 +216,7 @@ function printWatchList() {
         watchlistRemoveButton.setAttribute("type", "submit");
         watchlistRemoveButton.setAttribute("class", "remove-watchlist");
 
-        watchListArea.appendChild(watchListCard);
+        watchlistTab.appendChild(watchListCard);
         watchListCard.appendChild(watchListPosterCard);
         watchListCard.appendChild(watchListMovieTitle);
         watchListCard.appendChild(watchListRatingCard);
@@ -207,17 +230,19 @@ function printWatchList() {
             );
 
             userWatchList.splice(movieIndex, 1);
-            watchListArea.removeChild(watchListCard);
+            watchlistTab.removeChild(watchListCard);
         });
     }
 }
 
 function printSearchResults() {
-    const searchedMovieCard = document.createElement("section") as HTMLElement;
-    searchedMovieCard.setAttribute("id", "searchedMovieCard");
     maincontentArea.innerHTML = "";
 
     for (let i: number = 0; i < searchedMovies.length; i++) {
+        const searchedMovieCard = document.createElement(
+            "section"
+        ) as HTMLElement;
+        searchedMovieCard.id = "searched-movie-id" + i;
         const searchedPosterCard = new Image();
         searchedPosterCard.setAttribute("class", "searched-movie-poster");
         searchedPosterCard.src = imageUrl + searchedMovies[i].poster_path;
@@ -238,6 +263,12 @@ function printSearchResults() {
         searchedMovieCard.appendChild(searchedPosterCard);
         searchedMovieCard.appendChild(movieTitleCard);
         searchedMovieCard.appendChild(movieRatingCard);
+
+        searchedPosterCard.addEventListener("click", (event) => {
+            event.preventDefault();
+            moviePage.push(searchedMovies[i]);
+            printMoviePage(searchedMovies[i]);
+        });
     }
 }
 
@@ -291,40 +322,72 @@ function printTopMovies() {
     }
 }
 
-function printMoviePage() {
-    const moviePageCard = document.createElement("section") as HTMLElement;
-    moviePageCard.setAttribute("id", "moviePageCard");
+function printMoviePage(moviePage: movie) {
     maincontentArea.innerHTML = "";
+    const selectedMovie = moviePage;
 
-    for (let i: number = 0; i < topMovies.length; i++) {
-        const topMoviesPosterCard = new Image();
-        topMoviesPosterCard.setAttribute("class", "top-movies-poster");
-        topMoviesPosterCard.src = imageUrl + topMovies[i].poster_path;
+    console.log(selectedMovie);
+    // maincontentArea.innerHTML = "";
+    const moviePageCard = document.createElement("section") as HTMLElement;
+    moviePageCard.setAttribute("class", "moviePageCard");
+
+    const movepagePosterCard = new Image();
+    movepagePosterCard.src = imageUrl + selectedMovie.poster_path;
+    movepagePosterCard.setAttribute("class", "page-movie-poster");
+    const movieTitleCard = document.createElement("p") as HTMLParagraphElement;
+    movieTitleCard.setAttribute("class", "top-movie-title");
+    movieTitleCard.innerHTML = selectedMovie.title;
+    const movieRatingCard = document.createElement("p") as HTMLParagraphElement;
+    movieRatingCard.innerHTML = `Rating: ${selectedMovie.rating.toString()}`;
+
+    const movieReleaseDate = document.createElement(
+        "p"
+    ) as HTMLParagraphElement;
+    movieReleaseDate.innerHTML = `Release Date: 
+    ${selectedMovie.release?.toString() || ""}`;
+
+    const movieOverview = document.createElement("p") as HTMLParagraphElement;
+    movieOverview.innerHTML = `Story Overview: 
+    ${selectedMovie.overview?.toString() || ""}`;
+
+    maincontentArea.appendChild(moviePageCard);
+    moviePageCard.appendChild(movepagePosterCard);
+    moviePageCard.appendChild(movieTitleCard);
+    moviePageCard.appendChild(movieRatingCard);
+    moviePageCard.appendChild(movieReleaseDate);
+    moviePageCard.appendChild(movieOverview);
+}
+
+function printMovieNowPlayingMovies() {
+    maincontentArea.innerHTML = "";
+    const nowPlayingHeading = document.createElement(
+        "h4"
+    ) as HTMLHeadingElement;
+    nowPlayingHeading.setAttribute("class", "header");
+    nowPlayingHeading.innerHTML = "Now Playing";
+
+    for (let i: number = 0; i < nowPlayingMovies.length; i++) {
+        const moviesCard = document.createElement("section") as HTMLElement;
+        moviesCard.setAttribute("class", "now-playing-movie-card");
+        const moviePosterCard = new Image();
+        moviePosterCard.setAttribute("class", "movie-poster");
+        moviePosterCard.src = imageUrl + nowPlayingMovies[i].poster_path;
+
         const movieTitleCard = document.createElement(
             "p"
         ) as HTMLParagraphElement;
-        movieTitleCard.setAttribute("class", "top-movie-title");
-        movieTitleCard.innerHTML = topMovies[i].title;
+        movieTitleCard.setAttribute("class", "movie-title");
+        movieTitleCard.innerHTML = nowPlayingMovies[i].title;
         const movieRatingCard = document.createElement(
             "p"
         ) as HTMLParagraphElement;
-        movieRatingCard.innerHTML = `Rating: ${topMovies[i].rating.toString()}`;
+        movieRatingCard.innerHTML = `Rating: ${nowPlayingMovies[
+            i
+        ].rating.toString()}`;
 
-        const movieReleaseDate = document.createElement(
-            "p"
-        ) as HTMLParagraphElement;
-        movieReleaseDate.innerHTML = topMovies[i].release.toString();
-
-        const movieOverview = document.createElement(
-            "p"
-        ) as HTMLParagraphElement;
-        movieOverview.innerHTML = topMovies[i].overview;
-
-        maincontentArea.appendChild(moviePageCard);
-        moviePageCard.appendChild(topMoviesPosterCard);
-        moviePageCard.appendChild(movieTitleCard);
-        moviePageCard.appendChild(movieRatingCard);
-        moviePageCard.appendChild(movieReleaseDate);
-        moviePageCard.appendChild(movieOverview);
+        maincontentArea.appendChild(moviesCard);
+        moviesCard.appendChild(moviePosterCard);
+        moviesCard.appendChild(movieTitleCard);
+        moviesCard.appendChild(movieRatingCard);
     }
 }

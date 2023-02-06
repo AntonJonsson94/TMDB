@@ -21,6 +21,17 @@
             border-radius: 10;
             margin-top: 50px;
 }
+@function colorByValue($value) {
+    $color: null;
+    @if $value >= 8 {
+        $color: green;
+    } @else if $value >= 4 {
+        $color: yellow;
+    } @else {
+        $color: red;
+    }
+    @return $color;
+}
 
 body{
     background: black;
@@ -95,7 +106,7 @@ body{
         font-size: xx-large;
         position: relative;
         right: 15;
-        bottom: 50;
+        bottom: 10;
         
     
     }
@@ -126,19 +137,45 @@ body{
             
     }
     #trending-add:hover{
+        color: white;
         background-color: rgb(91, 255, 91);
+        transform: scale(1.05);
+            transition-duration: 200ms;
     }
     #main-content{
         background-color: white;
        
         .searched-movie-poster{
             @include posterDesign();
+            margin: 20px;
+            height: 300px;
             
         }
         .searched-movie-poster:hover{
                 transform: scale(1.1);
             transition-duration: 500ms;
             
+        }
+        
+        .page-movie-poster{
+            @include posterDesign();
+            margin: 20px;
+            height: 300px; 
+        }
+
+        .movie-poster{
+            @include posterDesign();
+            height: 500px;
+        }
+        .header{
+        
+            background: -webkit-linear-gradient(rgb(88, 205, 255), #333);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-size: xx-large;
+            position: relative;
+            right: 15;
+            bottom: 10;
         }
 
 
@@ -148,6 +185,14 @@ body{
         .watchlist-poster{
             @include posterDesign();
             
+        }
+        .remove-watchlist{
+            border-radius: 10;
+            &:hover{
+                background-color: rgb(224, 49, 49);
+                transition-duration: 500ms;
+
+            }
         }
 
     }
