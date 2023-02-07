@@ -1,6 +1,6 @@
 # The Movie DataBase
 
-A project using AJAX, TypeScript, SASS, and HTML. This project is using the https://www.themoviedb.org/ API.
+A project using AJAX, TypeScript, SASS, and HTML. This project uses the https://www.themoviedb.org/ API.
 
 ## Getting Started
 
