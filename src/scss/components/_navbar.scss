@@ -1,9 +1,7 @@
 @mixin flexCenter(){
     display: flex; 
     justify-content: center;
+    color: aliceblue;
     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
-    background-color: blueviolet;
-    padding: 5;
-    gap:25; 
-    
+    background-image: url("https://thumbs.gfycat.com/AdorableDapperGallowaycow-size_restricted.gif");
 }

@@ -1,37 +1,7 @@
+@use './abstracts' as *;
 
 
 
-@mixin flexCenter(){
-    display: flex; 
-    justify-content: center;
-    color: aliceblue;
-    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
-    background-image: url("https://thumbs.gfycat.com/AdorableDapperGallowaycow-size_restricted.gif");
-}
-
-@mixin gridLayout(){
-    display: grid;
-    grid-template-columns: 1fr 2fr 1fr;
-    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana;
-    
-}
-@mixin posterDesign(){
-            height: 30%;
-            justify-content: center;
-            border-radius: 10;
-            margin-top: 50px;
-}
-@function colorByValue($value) {
-    $color: null;
-    @if $value >= 8 {
-        $color: green;
-    } @else if $value >= 4 {
-        $color: yellow;
-    } @else {
-        $color: red;
-    }
-    @return $color;
-}
 
 body{
     background: black;
@@ -80,22 +50,21 @@ body{
 .grid{
     
     @include gridLayout();
-    width: fit-content;
+    position: relative;
+    top: 10px;
     text-align: center;
     
     .content{
         background: black;
-        margin: 10;
         border-radius: 10px;
         padding: 50px;
         border: 1px solid black;
-        height: 75vh;
+        height: 770px;
         justify-content: space-between;
         scroll-behavior: smooth;
         overflow-y: scroll;
-        
-        
-        
+        text-align: center;
+    
         
     }
     .header{
@@ -117,7 +86,7 @@ body{
         right: 20;
         margin-top: 30;
         background: rgb(0, 0, 0);
-        color: white;
+        color: $textColorLit;
         width: fit-content;
         padding-top: 20;
         padding-left: 10;
@@ -131,8 +100,11 @@ body{
         #trending-add{
             text-align: center;
             padding: 10;
-            margin-bottom: 110;
+            margin: 40;
+            color: $textColorDark;
             border-radius: 20px;
+            position: relative;
+            bottom: 40;
         }
             
     }
@@ -144,28 +116,19 @@ body{
     }
     #main-content{
         background-color: white;
-       
-        .searched-movie-poster{
-            @include posterDesign();
-            margin: 20px;
-            height: 300px;
-            
-        }
-        .searched-movie-poster:hover{
-                transform: scale(1.1);
-            transition-duration: 500ms;
-            
-        }
+        align-items: center;
         
-        .page-movie-poster{
-            @include posterDesign();
-            margin: 20px;
-            height: 300px; 
-        }
+      
 
-        .movie-poster{
-            @include posterDesign();
-            height: 500px;
+        .searched-movie-poster, .movie-poster, .top-movie-poster, .page-movie-poster , .now-playing-movie-poster{
+            
+            text-align: center;
+            margin: 20px;
+            border-radius: 10;
+            height: 300px;
+            &:hover {
+                transform: scale(1.1);
+                transition-duration: 500ms;}
         }
         .header{
         
@@ -175,7 +138,7 @@ body{
             font-size: xx-large;
             position: relative;
             right: 15;
-            bottom: 10;
+            bottom: 90px;
         }
 
 
@@ -207,47 +170,44 @@ body{
     color: white;
 }
 
-.wrapper{
-    background: blue;
 
-}
-.error{
-    display: flex;
-    flex-direction: column;
-    text-align: center;
-}
-.error-serious:hover{
-    @extend .error;
-    color: red;
-    transition-duration: 500ms;
-}
 
 
   
 
-@media(max-width: 400px){
-    #main-content{
-        width: 186%;
-            height: 80vh;
-        #searchedMovieCard{
-            padding-top: 10vh;
-            
-        }
+@media(max-width: 480px){
+    #top-movies, #top-tv, #submit{
+        display: none;
     }
-    #trending-tab, #watchlist-tab, #top-tv, #top-movies, #home {
+    .grid{
+        width: 479px;
+        align-items: center;
+        text-align: center;
+        #main-content{
+            width: 479px;
+            align-items: center;
+            text-align: center;
+            position: relative;
+            right: 60;
+    }
+    #trending-tab, #watchlist-tab{
         display: none;
     }
     .flex{
-        display: flex;
-        position: fixed;
-        flex-direction: row;
-        height: 5rem;
+        
+        position: absolute;
+        
+        .nav-bar{
+            color: #f0f8ff;
+            font-family: Lucida Sans, Lucida Sans Regular, Lucida Grande, Lucida Sans Unicode, Geneva, Verdana, sans-serif;
+        }
+        
+    }
+      
     
-    }
-
 }
-#input{
-height: 1000px;
-    }
-   
+}
+
+
+
   
