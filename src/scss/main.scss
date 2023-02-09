@@ -25,52 +25,32 @@ body{
         display: none;
       }
     .nav-bar{
-        #home{
-          
-          
-        }
         @include flexCenter();
-        #top-movies, #top-tv, .form, #trending-tab{
-          right: 0;
-          left: 0;
-
-        }
+        
+            #top-movies, #top-tv, #trending-tab{
+              right: 0;
+              left: 0;
+              &:hover{
+                transform: scale(1.1);
+                transition-duration: 500ms;
+                padding-left: 10;
+                padding-right: 10;
+               
+            }
     
- }
-    .nav-menu{
-        &:hover{
-            transform: scale(1.1);
-            transition-duration: 500ms;
+            }
+            .submit-btn{
+                @include buttonStyle();
+               
+                &:hover{
+                    background-color: rgb(255, 255, 255);
+                    transition-duration: 500ms;
+                }
+       
            
         }
-    }
-    #input{
-        transform: scale(1);
-        font-size: medium;
-        border-radius: 12px;
-        font-size: medium;
-        border-radius: 12px;
-        padding: 0px;
-        
-
-        
-        
-       
-    }
-    .submit-btn{
-        @include buttonStyle();
-        right: 5px;
-        &:hover{
-            background-color: rgb(166, 166, 166);
-            transition-duration: 500ms;
-        }
-    .submit{
-        @include buttonStyle();
-        &:hover{
-            background-color: rgb(255, 255, 255);
-            transition-duration: 500ms;
-        }
-    }
+    
+    
    
 
     }
@@ -80,56 +60,43 @@ body{
 }
 .grid{
     @include gridLayout();
-    width: 100vw;
+    
+    
     
     .content-main, .content-trending, .content-watchlist{
         background: black;
         border-radius: 10px;
-        padding: 50px;
+        
         border: 1px solid black;
-        height: 770px;
-        justify-content: space-between;
-        scroll-behavior: smooth;
         overflow-y: scroll;
         text-align: center;
         
         
     }
-    .header-now-playing{
-        
-        top: -65vh;
-
-
-    }
-    .header{
-        
-        background: -webkit-linear-gradient(rgb(88, 205, 255), #333);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        font-size: xx-large;
-       
-        
     
+    .header, .header-now-playing{
+        
+        @include headerStyle();
     }
     
     #trendingcard{
         
         
-        margin-top: 30;
+        margin-top: 3vh;
         background: rgb(0, 0, 0);
         color: $textColorLit;
         width: fit-content;
-        padding-top: 20;
-        padding-left: 10;
-        padding-right: 10;
-        padding-top: 20;
+        padding-top: 2vh;
+        padding-left: 1vh;
+        padding-right: 1vh;
+        padding-bottom: 2vh;
         
         .trending-poster{
             @include posterDesign();
     
     }
         #trending-add{
-            @include addToWatchListButton();
+          @include removeFromWatchlistButton()
         }
             
     }
@@ -200,15 +167,6 @@ body{
     }
 
     }
-    
-    
-    
-
-
-.p{
-    color: white;
-}
-
 }
 
 @media(max-width: 1023px){
@@ -222,25 +180,40 @@ body{
         
         #top-movies, #top-tv, #submit, #trending-tab, #watchlist-tab{
                     display: none;
+                    
                 }
                 
                 
                 #watchlist-tab{
-                    background: black;
+                    background: #01b4e4;
                     color: $textColorLit;
-                    
+                    height: 100vh;
+                    min-width: 50vh;
+                    position: fixed;
+                    top: 0;
+                    right: -85;
+                    border-radius: 20;
                     border-radius: 100px solid black;
-                    width: fit-content;
                     overflow-y: auto;
+                    
+                    
+                    
                     .watchlist-poster{
                                 margin-top: 20;
                                 height: 200px;
                                 border-radius: 10;
+                                
                             }
-                            #watchlist, #watchlist-header {
+                            #watchlist-header{
                                 margin-left: 10;
                                 margin-right: 100;
-                                margin-bottom: 30;
+                            }
+                            #watchlist{
+                                margin-left: 10;
+                                margin-right: 100;
+                                margin-bottom: 100;
+                                
+                                
                                 
                             }
                             .remove-watchlist{
@@ -263,6 +236,7 @@ body{
                     padding-left: 50;
                     padding-right: 50;
                     padding-bottom: 50;
+                    margin-top: 50;
                     overflow-y: scroll;
                     
                     
@@ -288,11 +262,22 @@ body{
         position: fixed;
         top: 0;
         background: black;
+        width: 100vw;
+        
         .nav-bar{
-            @include flexCenter();
+            @include flexCenterMobile();
+            
             background-color: black;
+            #watchlist-button{
+                right: 12;
+            }
+            #input{
+                right: 12;
+                
+            }
             #home{
-
+                width: 14vh;
+                margin-top: 12px;
                 &:active{
                     transform: scale(1.1);
                     transition-duration: 10ms;
@@ -301,13 +286,12 @@ body{
             
             }
             
-            gap: 25;
-            padding: 5; 
+            
            
                     
                     #input{
                         width: 214px;
-                        
+                        text-align: center;
                         font-size: large;
                         border-radius: 5px;
                        
@@ -317,127 +301,6 @@ body{
         }
 }
 
-
-
-// @media(max-width: 480px){
-//     body{
-//         min-width: 100vw;
-//         display: block;
-//         overflow-x: hidden;
-//         align-items: center;
-//         text-align: center;
-
-//         .flex{
-            
-            
-            
-//             .nav-bar{
-//             @include flexCenter();
-//             width: 100vw;
-            
-            
-            
-//          }
-//             .nav-menu{
-//                 &:hover{
-//                     transform: scale(1.2);
-//                     transition-duration: 500ms;
-                   
-//                 }
-//             }
-//             .submit{
-//                 @include buttonStyle();
-//                 &:hover{
-//                     background-color: rgb(255, 255, 255);
-//                     transition-duration: 500ms;
-//                 }
-//             }
-//             .nav-bar .submit-btn{
-//                 @include buttonStyle();
-//                 right: 5px;
-//                 &:hover{
-//                     background-color: rgb(166, 166, 166);
-//                     transition-duration: 500ms;
-//                 }
-        
-//             }
-        
-            
-        
-//         }
-//     }
-//     #top-movies, #top-tv, #submit{
-//         display: none;
-//     }
-//     #home, #watchlist-button{
-//         position: relative;
-//         top: 10;
-        
-//     }
-    
-//     #input{
-//         width: 214px;
-//         height: 41px;
-//         font-size: large;
-//         border-radius: 12px;
-//         padding: 20px;
-//     }
-//     .grid{
-//         .content{
-//             width: 100vw;
-//             margin-left: 10;
-            
-//             overflow-y: scroll;
-//             overflow-x: hidden;
-//     }
-//     .searched-movie-poster, .movie-poster, .top-movie-poster, .page-movie-poster , .now-playing-movie-poster{
-            
-//         text-align: center;
-//         margin: 20px;
-//         border-radius: 10;
-//         height: 300px;
-//         &:hover {
-//             transform: scale(1.1);
-//             transition-duration: 500ms;}
-//     }
-//     .moviePageCard{
-        
-//     }
-//     #trending-tab, #watchlist-tab{
-//         display: none;
-        
-        
-//         .header{
-//             position: relative;
-//             bottom: 100;
-//             width: 200px;
-//             color: $textColorLit;
-            
-//         }
-//         .watchlist-card{
-//             position: relative;
-//             right: 1000;
-            
-//         }
-//     }
-//     .moviePageCard{
-//         width: 100vw;
-//         height: 100%;
-//         margin-left: 10;
-//         margin-right: 10;
-//         overflow-y: scroll;
-        
-
-//         #add-to-watchlist{
-//             @include addToWatchListButton();
-
-//         }
-//     }
-    
-// }
-// }
-
-  
 
 
 

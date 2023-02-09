@@ -11,7 +11,7 @@ const watchlistButton = document.querySelector(
 ) as HTMLParagraphElement;
 
 maincontentArea.addEventListener("click", () => {
-    if (window.matchMedia("(max-width: 480px)").matches) {
+    if (window.matchMedia("(max-width: 1023px)").matches) {
         if (
             watchListArea.style.display === "block" &&
             watchListButton.style.display === "none"
@@ -22,7 +22,7 @@ maincontentArea.addEventListener("click", () => {
     }
 });
 function showWatchlist() {
-    if (window.matchMedia("(max-width: 480px)").matches) {
+    if (window.matchMedia("(max-width: 1023px)").matches) {
         if (watchListArea.style.display === "none") {
             watchListButton.style.display = "none";
             watchListArea.style.display = "block";
@@ -487,8 +487,8 @@ function printMovieNowPlayingMovies() {
         addToWatchlistButton.setAttribute("type", "submit");
         addToWatchlistButton.setAttribute("value", "Add to Watchlist");
 
+        maincontentArea.appendChild(nowPlayingHeading);
         maincontentArea.appendChild(moviesCard);
-        movieTitleCard.appendChild(nowPlayingHeading);
         moviesCard.appendChild(moviePosterCard);
         moviesCard.appendChild(movieTitleCard);
         moviesCard.appendChild(movieRatingCard);

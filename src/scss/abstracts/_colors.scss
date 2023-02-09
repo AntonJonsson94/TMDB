@@ -2,5 +2,10 @@ $primaryColor: black;
 $secondaryColor: rgb(77, 77, 255);
 $textColorDark: black;
 $textColorLit: white;
-
+@mixin headerStyle(){
+    background: -webkit-linear-gradient(rgb(88, 205, 255), #333);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        font-size: x-large;
+};
 

@@ -3,7 +3,20 @@
     flex-wrap: wrap; 
     justify-content:center;
     color: aliceblue;
+    z-index: 4;
     width: 100vw;
     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
     background-image: url("https://thumbs.gfycat.com/AdorableDapperGallowaycow-size_restricted.gif");
+    gap: 50;
 }
+
+@mixin flexCenterMobile(){
+    display: flex;
+    flex-wrap:wrap; 
+    justify-content: center;
+    color: aliceblue;
+    width: 100vw;
+    gap: 20;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    background-image: url("https://thumbs.gfycat.com/AdorableDapperGallowaycow-size_restricted.gif");  
+};

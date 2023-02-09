@@ -3,8 +3,7 @@
 @mixin addToWatchListButton(){
             text-align: center;
             padding: 10px 10px;
-            font-size: 20px;
-            margin: 10;
+            margin: 0;
             color: $textColorDark;
             border-radius: 20px;
             
@@ -12,13 +11,20 @@
 
 @mixin removeFromWatchlistButton(){
     text-align: center;
-    padding: 10px 10px;
-    border-radius: 50;
-    font-size: 20px;
+            padding: 10px 10px;
+            font-size: 20px;
+            margin: 10;
+            color: $textColorDark;
+            border-radius: 20px;
 }
 
 @mixin buttonStyle{
-    
-    width: 5vw;
-    
+    width: 6vw;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: 0;
+    padding: 0;
+
 }
