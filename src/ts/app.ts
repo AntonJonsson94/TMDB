@@ -1,11 +1,37 @@
 const submitButton = document.querySelector("#submit") as HTMLElement;
-submitButton.innerText = "Search";
+
 const trendingTab = document.querySelector("#trending") as HTMLElement;
 const maincontentArea = document.querySelector("#main-content") as HTMLElement;
 const watchListArea = document.querySelector("#watchlist-tab") as HTMLElement;
 const watchlistTab = document.querySelector("#watchlist") as HTMLElement;
 const homeButton = document.querySelector("#home") as HTMLParagraphElement;
 const topTVButton = document.querySelector("#top-tv") as HTMLParagraphElement;
+const watchlistButton = document.querySelector(
+    "#watchlist-button"
+) as HTMLParagraphElement;
+
+maincontentArea.addEventListener("click", () => {
+    if (window.matchMedia("(max-width: 480px)").matches) {
+        if (
+            watchListArea.style.display === "block" &&
+            watchListButton.style.display === "none"
+        ) {
+            watchListArea.style.display = "none";
+            watchListButton.style.display = "block";
+        }
+    }
+});
+function showWatchlist() {
+    if (window.matchMedia("(max-width: 480px)").matches) {
+        if (watchListArea.style.display === "none") {
+            watchListButton.style.display = "none";
+            watchListArea.style.display = "block";
+        } else {
+            watchListArea.style.display = "none";
+            watchListButton.style.display = "block";
+        }
+    }
+}
 
 homeButton.addEventListener("click", (event) => {
     event.preventDefault();
@@ -31,8 +57,10 @@ const searchMovieUrl = "https://api.themoviedb.org/3/search/movie";
 const apiKey = "?api_key=aa5ee409d52ded21ba46b85a22480907";
 const queryUrl = "&query=";
 const imageUrl = "https://image.tmdb.org/t/p/w500//";
-const trendingUrl =
-    "https://api.themoviedb.org/3/trending/all/day?api_key=aa5ee409d52ded21ba46b85a22480907";
+const trendingUrl = "https://api.themoviedb.org/3/trending/all/day";
+const pageUrl = "&page=1";
+const sortByUrl = "&sort_by=";
+const discoverUrl = "https://api.themoviedb.org/3/discover/movie?";
 
 type movie = {
     poster_path: string;
@@ -110,19 +138,19 @@ async function getSearchedMovie() {
             overview: data.results[i].overview,
         };
         searchedMovies.push(newSearchedMovies);
-        console.log(newSearchedMovies);
+
         printSearchResults();
     }
 }
 
 submitButton.addEventListener("click", (event) => {
     event.preventDefault();
-
+    console.log(searchedMovies);
     getSearchedMovie();
 });
 
 async function getTrendingMovies() {
-    const response = await fetch(trendingUrl);
+    const response = await fetch(trendingUrl + apiKey);
     const data = await response.json();
 
     for (let i = 0; i < data.results.length; i++) {
@@ -180,6 +208,8 @@ function printTrendingMovies() {
 
         addToWatchlistButton.addEventListener("click", () => {
             const index = trendingMovies[i];
+            addToWatchlistButton.setAttribute("value", "Added to Watchlist!");
+            addToWatchlistButton.style.backgroundColor = "grey";
             addMovie(index);
         });
 
@@ -254,7 +284,10 @@ function printWatchList() {
             const movieIndex = userWatchList.findIndex(
                 (movie) => movie.title === currentMovie.title
             );
-
+            printSearchResults();
+            printTopMovies();
+            printMovieNowPlayingMovies();
+            printTrendingMovies();
             userWatchList.splice(movieIndex, 1);
             watchlistTab.removeChild(watchListCard);
         });
@@ -262,12 +295,10 @@ function printWatchList() {
 }
 
 function printSearchResults() {
+    const searchedMovieCard = document.createElement("section") as HTMLElement;
     maincontentArea.innerHTML = "";
 
     for (let i: number = 0; i < searchedMovies.length; i++) {
-        const searchedMovieCard = document.createElement(
-            "section"
-        ) as HTMLElement;
         searchedMovieCard.id = "searched-movie-id" + i;
         const searchedPosterCard = new Image();
         searchedPosterCard.setAttribute("class", "searched-movie-poster");
@@ -349,6 +380,7 @@ function printTopMovies() {
         const addToWatchlistButton = document.createElement(
             "input"
         ) as HTMLInputElement;
+        addToWatchlistButton.setAttribute("id", "add-to-watchlist");
         addToWatchlistButton.setAttribute("type", "submit");
         addToWatchlistButton.setAttribute("value", "Add to Watchlist");
 
@@ -393,13 +425,17 @@ function printMoviePage(moviePage: movie) {
     movieReleaseDate.innerHTML = `Release Date: 
     ${selectedMovie.release?.toString() || ""}`;
 
-    const movieOverview = document.createElement("p") as HTMLParagraphElement;
-    movieOverview.innerHTML = `Story Overview: 
-    ${selectedMovie.overview?.toString() || ""}`;
+    const movieOverviewHeader = document.createElement(
+        "p"
+    ) as HTMLParagraphElement;
+    movieOverviewHeader.innerHTML = `Story Overview`;
+    const overview = document.createElement("p") as HTMLParagraphElement;
+    overview.innerHTML = selectedMovie.overview?.toString() || "";
 
     const addToWatchlistButton = document.createElement(
         "input"
     ) as HTMLInputElement;
+    addToWatchlistButton.setAttribute("id", "add-to-watchlist");
     addToWatchlistButton.setAttribute("type", "submit");
     addToWatchlistButton.setAttribute("value", "Add to Watchlist");
 
@@ -408,7 +444,8 @@ function printMoviePage(moviePage: movie) {
     moviePageCard.appendChild(movieTitleCard);
     moviePageCard.appendChild(movieRatingCard);
     moviePageCard.appendChild(movieReleaseDate);
-    moviePageCard.appendChild(movieOverview);
+    moviePageCard.appendChild(movieOverviewHeader);
+    moviePageCard.appendChild(overview);
     moviePageCard.appendChild(addToWatchlistButton);
 
     addToWatchlistButton.addEventListener("click", () => {
@@ -422,9 +459,8 @@ function printMovieNowPlayingMovies() {
     const nowPlayingHeading = document.createElement(
         "h4"
     ) as HTMLHeadingElement;
-    nowPlayingHeading.setAttribute("class", "header");
     nowPlayingHeading.innerHTML = "Now Playing";
-
+    nowPlayingHeading.setAttribute("class", "header-now-playing");
     for (let i: number = 0; i < nowPlayingMovies.length; i++) {
         const moviesCard = document.createElement("section") as HTMLElement;
         moviesCard.setAttribute("class", "now-playing-movie-card");
@@ -444,12 +480,26 @@ function printMovieNowPlayingMovies() {
             i
         ].rating.toString()}`;
 
+        const addToWatchlistButton = document.createElement(
+            "input"
+        ) as HTMLInputElement;
+        addToWatchlistButton.setAttribute("id", "add-to-watchlist");
+        addToWatchlistButton.setAttribute("type", "submit");
+        addToWatchlistButton.setAttribute("value", "Add to Watchlist");
+
         maincontentArea.appendChild(moviesCard);
+        movieTitleCard.appendChild(nowPlayingHeading);
         moviesCard.appendChild(moviePosterCard);
         moviesCard.appendChild(movieTitleCard);
         moviesCard.appendChild(movieRatingCard);
+        moviesCard.appendChild(addToWatchlistButton);
 
-        moviesCard.addEventListener("click", (event) => {
+        addToWatchlistButton.addEventListener("click", () => {
+            const index = nowPlayingMovies[i];
+            addMovie(index);
+        });
+
+        moviePosterCard.addEventListener("click", (event) => {
             event.preventDefault();
             moviePage.push(nowPlayingMovies[i]);
             printMoviePage(nowPlayingMovies[i]);
@@ -501,6 +551,7 @@ async function getTopTvShows() {
             const addToWatchlistButton = document.createElement(
                 "input"
             ) as HTMLInputElement;
+            addToWatchlistButton.setAttribute("id", "add-to-watchlist");
             addToWatchlistButton.setAttribute("type", "submit");
             addToWatchlistButton.setAttribute("value", "Add to Watchlist");
 

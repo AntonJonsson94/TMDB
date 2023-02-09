@@ -3,31 +3,67 @@
 
 
 
+
+
+
+
+@media(min-width: 1024px){
 body{
     background: black;
+    width: 100vw;
+    
+
     
 }
-@mixin buttonStyle{
-    position: relative;
-    top: 14px;
-    max-height: 25px;
-}
+
 
 .flex{
- .nav-bar{
-     position: sticky;
     @include flexCenter();
-    border: 1px solid black;
-    gap: 25;
-    padding: 5; 
+    
+    
+    #watchlist-button{
+        display: none;
+      }
+    .nav-bar{
+        #home{
+          
+          
+        }
+        @include flexCenter();
+        #top-movies, #top-tv, .form, #trending-tab{
+          right: 0;
+          left: 0;
+
+        }
+    
  }
     .nav-menu{
         &:hover{
-            transform: scale(1.2);
+            transform: scale(1.1);
             transition-duration: 500ms;
            
         }
     }
+    #input{
+        transform: scale(1);
+        font-size: medium;
+        border-radius: 12px;
+        font-size: medium;
+        border-radius: 12px;
+        padding: 0px;
+        
+
+        
+        
+       
+    }
+    .submit-btn{
+        @include buttonStyle();
+        right: 5px;
+        &:hover{
+            background-color: rgb(166, 166, 166);
+            transition-duration: 500ms;
+        }
     .submit{
         @include buttonStyle();
         &:hover{
@@ -35,26 +71,18 @@ body{
             transition-duration: 500ms;
         }
     }
-    .nav-bar .submit-btn{
-        @include buttonStyle();
-        right: 5px;
-        &:hover{
-            background-color: rgb(166, 166, 166);
-            transition-duration: 500ms;
-        }
+   
+
     }
 
     
 
 }
 .grid{
-    
     @include gridLayout();
-    position: relative;
-    top: 10px;
-    text-align: center;
+    width: 100vw;
     
-    .content{
+    .content-main, .content-trending, .content-watchlist{
         background: black;
         border-radius: 10px;
         padding: 50px;
@@ -64,8 +92,14 @@ body{
         scroll-behavior: smooth;
         overflow-y: scroll;
         text-align: center;
-    
         
+        
+    }
+    .header-now-playing{
+        
+        top: -65vh;
+
+
     }
     .header{
         
@@ -73,17 +107,14 @@ body{
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         font-size: xx-large;
-        position: relative;
-        right: 15;
-        bottom: 10;
+       
         
     
     }
     
     #trendingcard{
         
-        position: relative;
-        right: 20;
+        
         margin-top: 30;
         background: rgb(0, 0, 0);
         color: $textColorLit;
@@ -98,13 +129,7 @@ body{
     
     }
         #trending-add{
-            text-align: center;
-            padding: 10;
-            margin: 40;
-            color: $textColorDark;
-            border-radius: 20px;
-            position: relative;
-            bottom: 40;
+            @include addToWatchListButton();
         }
             
     }
@@ -117,16 +142,20 @@ body{
     #main-content{
         background-color: white;
         align-items: center;
+
+        .moviePageCard{
+            
+        }
+        
         
       
 
-        .searched-movie-poster, .movie-poster, .top-movie-poster, .page-movie-poster , .now-playing-movie-poster{
+        .searched-movie-poster, .movie-poster, .top-movie-poster, .page-movie-poster , .now-playing-movie-poster, .watchlist-poster{
             
-            text-align: center;
-            margin: 20px;
-            border-radius: 10;
-            height: 300px;
+            @include posterDesign();
+            
             &:hover {
+                border: 1px solid black;
                 transform: scale(1.1);
                 transition-duration: 500ms;}
         }
@@ -136,9 +165,19 @@ body{
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             font-size: xx-large;
-            position: relative;
-            right: 15;
-            bottom: 90px;
+            
+            
+        }
+        #add-to-watchlist{
+            @include addToWatchListButton();
+            
+            &:hover{
+                color: white;
+                background-color: rgb(91, 255, 91);
+                transform: scale(1.05);
+                transition-duration: 200ms;
+                
+            }
         }
 
 
@@ -170,43 +209,236 @@ body{
     color: white;
 }
 
+}
+
+@media(max-width: 1023px){
+    
+    body{
+        font-family: 'Roboto', sans-serif;
+        background: black;
+        display: block;
+        text-align: center;
+        max-width: 100vw;
+        
+        #top-movies, #top-tv, #submit, #trending-tab, #watchlist-tab{
+                    display: none;
+                }
+                
+                
+                #watchlist-tab{
+                    background: black;
+                    color: $textColorLit;
+                    
+                    border-radius: 100px solid black;
+                    width: fit-content;
+                    overflow-y: auto;
+                    .watchlist-poster{
+                                margin-top: 20;
+                                height: 200px;
+                                border-radius: 10;
+                            }
+                            #watchlist, #watchlist-header {
+                                margin-left: 10;
+                                margin-right: 100;
+                                margin-bottom: 30;
+                                
+                            }
+                            .remove-watchlist{
+                                @include removeFromWatchlistButton();
+                            }
+                }
+                    }
+                    
+                }
+
+                .searched-movie-poster, .movie-poster, .top-movie-poster, .page-movie-poster , .now-playing-movie-poster{
+                    max-width: 45vw;
+                    min-height: fit-content;
+                    border-radius: 15px;
+                    margin-top: 10vh;
+                }
+                #main-content{
+                    background: rgb(255, 255, 255);
+                    border-radius: 10;
+                    padding-left: 50;
+                    padding-right: 50;
+                    padding-bottom: 50;
+                    overflow-y: scroll;
+                    
+                    
+
+                    
+                    #add-to-watchlist{
+                        @include addToWatchListButton();
+                        
+                            &:active{
+                                color: white;
+                                background-color: rgb(91, 255, 91);
+                                transform: scale(0.8);
+                                transition-duration: 200ms;
+                                
+                            }
+                    }
+                }
+    
+    
+    
+
+    .flex{
+        position: fixed;
+        top: 0;
+        background: black;
+        .nav-bar{
+            @include flexCenter();
+            background-color: black;
+            #home{
+
+                &:active{
+                    transform: scale(1.1);
+                    transition-duration: 10ms;
+                    
+            }
+            
+            }
+            
+            gap: 25;
+            padding: 5; 
+           
+                    
+                    #input{
+                        width: 214px;
+                        
+                        font-size: large;
+                        border-radius: 5px;
+                       
+                        position: relative;
+                        top: 14;
+                    }
+        }
+}
 
 
+
+// @media(max-width: 480px){
+//     body{
+//         min-width: 100vw;
+//         display: block;
+//         overflow-x: hidden;
+//         align-items: center;
+//         text-align: center;
+
+//         .flex{
+            
+            
+            
+//             .nav-bar{
+//             @include flexCenter();
+//             width: 100vw;
+            
+            
+            
+//          }
+//             .nav-menu{
+//                 &:hover{
+//                     transform: scale(1.2);
+//                     transition-duration: 500ms;
+                   
+//                 }
+//             }
+//             .submit{
+//                 @include buttonStyle();
+//                 &:hover{
+//                     background-color: rgb(255, 255, 255);
+//                     transition-duration: 500ms;
+//                 }
+//             }
+//             .nav-bar .submit-btn{
+//                 @include buttonStyle();
+//                 right: 5px;
+//                 &:hover{
+//                     background-color: rgb(166, 166, 166);
+//                     transition-duration: 500ms;
+//                 }
+        
+//             }
+        
+            
+        
+//         }
+//     }
+//     #top-movies, #top-tv, #submit{
+//         display: none;
+//     }
+//     #home, #watchlist-button{
+//         position: relative;
+//         top: 10;
+        
+//     }
+    
+//     #input{
+//         width: 214px;
+//         height: 41px;
+//         font-size: large;
+//         border-radius: 12px;
+//         padding: 20px;
+//     }
+//     .grid{
+//         .content{
+//             width: 100vw;
+//             margin-left: 10;
+            
+//             overflow-y: scroll;
+//             overflow-x: hidden;
+//     }
+//     .searched-movie-poster, .movie-poster, .top-movie-poster, .page-movie-poster , .now-playing-movie-poster{
+            
+//         text-align: center;
+//         margin: 20px;
+//         border-radius: 10;
+//         height: 300px;
+//         &:hover {
+//             transform: scale(1.1);
+//             transition-duration: 500ms;}
+//     }
+//     .moviePageCard{
+        
+//     }
+//     #trending-tab, #watchlist-tab{
+//         display: none;
+        
+        
+//         .header{
+//             position: relative;
+//             bottom: 100;
+//             width: 200px;
+//             color: $textColorLit;
+            
+//         }
+//         .watchlist-card{
+//             position: relative;
+//             right: 1000;
+            
+//         }
+//     }
+//     .moviePageCard{
+//         width: 100vw;
+//         height: 100%;
+//         margin-left: 10;
+//         margin-right: 10;
+//         overflow-y: scroll;
+        
+
+//         #add-to-watchlist{
+//             @include addToWatchListButton();
+
+//         }
+//     }
+    
+// }
+// }
 
   
 
-@media(max-width: 480px){
-    #top-movies, #top-tv, #submit{
-        display: none;
-    }
-    .grid{
-        width: 479px;
-        align-items: center;
-        text-align: center;
-        #main-content{
-            width: 479px;
-            align-items: center;
-            text-align: center;
-            position: relative;
-            right: 60;
-    }
-    #trending-tab, #watchlist-tab{
-        display: none;
-    }
-    .flex{
-        
-        position: absolute;
-        
-        .nav-bar{
-            color: #f0f8ff;
-            font-family: Lucida Sans, Lucida Sans Regular, Lucida Grande, Lucida Sans Unicode, Geneva, Verdana, sans-serif;
-        }
-        
-    }
-      
-    
-}
-}
 
 
 

@@ -11,7 +11,12 @@
     <body>
         <main class="flex">
             <nav class="nav-bar">
-                <p class="nav-menu" id="home">Home</p>
+                <img
+                    src="../logo.svg"
+                    height="30vh"
+                    class="nav-menu"
+                    id="home"
+                />
                 <p class="nav-menu" id="top-movies">Top Movies</p>
                 <p class="nav-menu" id="top-tv">Top TV Shows</p>
 
@@ -27,25 +32,30 @@
                         class="submit-btn"
                         value="Search"
                         id="submit"
-                        onclick="toggleVisibility()"
                     />
                 </form>
 
-                <p class="nav-menu" id="watchlist-button">Your Watchlist</p>
+                <p
+                    class="nav-menu"
+                    id="watchlist-button"
+                    onclick="showWatchlist()"
+                >
+                    Your Watchlist
+                </p>
             </nav>
         </main>
         <main class="grid">
-            <section class="content" id="trending-tab">
+            <section class="content-trending" id="trending-tab">
                 <h5 class="header">Trending</h5>
                 <section id="trending"></section>
             </section>
 
-            <section class="content" id="main-content">
+            <section class="content-main" id="main-content">
                 <h5 class="header">Now Playing</h5>
             </section>
 
-            <section class="content" id="watchlist-tab">
-                <h5 class="header">Your WatchList</h5>
+            <section class="content-watchlist" id="watchlist-tab">
+                <h5 class="header" id="watchlist-header">Your WatchList</h5>
                 <section id="watchlist"></section>
             </section>
         </main>

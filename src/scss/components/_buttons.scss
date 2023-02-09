@@ -1,0 +1,24 @@
+@use '../abstracts/colors' as *;
+
+@mixin addToWatchListButton(){
+            text-align: center;
+            padding: 10px 10px;
+            font-size: 20px;
+            margin: 10;
+            color: $textColorDark;
+            border-radius: 20px;
+            
+};
+
+@mixin removeFromWatchlistButton(){
+    text-align: center;
+    padding: 10px 10px;
+    border-radius: 50;
+    font-size: 20px;
+}
+
+@mixin buttonStyle{
+    
+    width: 5vw;
+    
+}
