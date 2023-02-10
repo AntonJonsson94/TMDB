@@ -71,10 +71,12 @@ body{
     .content-main, .content-trending, .content-watchlist{
         background: $primaryColor;
         border-radius: 10px;
+        margin-top: 50;
         margin-left: 1;
-        margin-right: 1;
+        margin-right: 10;
         overflow-y: scroll;
         text-align: center;
+        
         
         
     }
