@@ -6,6 +6,7 @@
             margin: 0;
             color: $textColorDark;
             border-radius: 20px;
+            cursor: pointer;
             
 };
 
@@ -16,15 +17,12 @@
             margin: 10;
             color: $textColorDark;
             border-radius: 20px;
+            cursor: pointer;
 }
 
 @mixin buttonStyle{
-    width: 6vw;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    margin: 0;
-    padding: 0;
+    color: $textColorLit;
+    background-color: transparent;
+    cursor: pointer;
 
 }

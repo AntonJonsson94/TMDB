@@ -1,13 +1,22 @@
+@use '../abstracts/colors' as *;
+
 @mixin flexCenter(){
     display: flex;
-    flex-wrap: wrap; 
-    justify-content:center;
+    flex-wrap: wrap;
+    position: fixed; 
+    top:0;
+    left: 0;
+    justify-content:space;
     color: aliceblue;
     z-index: 4;
     width: 100vw;
     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
-    background-image: url("https://thumbs.gfycat.com/AdorableDapperGallowaycow-size_restricted.gif");
-    gap: 50;
+    background-color: $primaryColor;
+    // background-image: url("https://windowscustomization.com/wp-content/uploads/2018/10/cyberpunk-night-city.gif");  
+    // background-size: cover;
+    // background-position-y: 800px;
+    // border-radius: 5;
+    
 }
 
 @mixin flexCenterMobile(){
@@ -18,5 +27,5 @@
     width: 100vw;
     gap: 20;
     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
-    background-image: url("https://thumbs.gfycat.com/AdorableDapperGallowaycow-size_restricted.gif");  
+     
 };
