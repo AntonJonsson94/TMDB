@@ -65,7 +65,14 @@ body{
 .grid{
     @include gridLayout();
     
-    
+    #rating{
+        font-weight: bolder;
+        
+        border-radius: 100;
+        
+        
+
+    }
     
     .content-main, .content-trending, .content-watchlist{
         background: $primaryColor;
@@ -113,7 +120,8 @@ body{
             transition-duration: 200ms;
     }
     #main-content{
-        background-color: white;
+        background-color: $primaryColor;
+        color: $textColorLit;
         align-items: center;
 
         .moviePageCard{

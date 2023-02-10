@@ -72,7 +72,7 @@ type movie = {
 
 const searchedMovies: movie[] = [];
 const topMovies: movie[] = [];
-const tpTvShows: movie[] = [];
+const topTvShows: movie[] = [];
 const trendingMovies: movie[] = [];
 const userWatchList: movie[] = [];
 const nowPlayingMovies: movie[] = [];
@@ -159,14 +159,14 @@ function printTrendingMovies() {
         const posterCard = new Image();
         posterCard.setAttribute("class", "trending-poster");
         posterCard.src = imageUrl + trendingMovies[i].poster_path;
-        const movieTitleCard = document.createElement(
+        const tvShowTitleCard = document.createElement(
             "p"
         ) as HTMLParagraphElement;
-        movieTitleCard.innerHTML = trendingMovies[i].title;
-        const movieRatingCard = document.createElement(
+        tvShowTitleCard.innerHTML = trendingMovies[i].title;
+        const tvShowRatingCard = document.createElement(
             "p"
         ) as HTMLParagraphElement;
-        movieRatingCard.innerHTML = `Rating:`;
+        tvShowRatingCard.innerHTML = `Rating:`;
 
         const ratingValue = document.createElement("p") as HTMLParagraphElement;
         ratingValue.innerHTML = trendingMovies[i].rating.toString();
@@ -184,8 +184,8 @@ function printTrendingMovies() {
 
         trendingTab.appendChild(trendingCard);
         trendingCard.appendChild(posterCard);
-        trendingCard.appendChild(movieTitleCard);
-        trendingCard.appendChild(movieRatingCard);
+        trendingCard.appendChild(tvShowTitleCard);
+        trendingCard.appendChild(tvShowRatingCard);
         trendingCard.appendChild(ratingValue);
 
         trendingCard.appendChild(addToWatchlistButton);
@@ -288,22 +288,22 @@ function printSearchResults() {
         searchedPosterCard.setAttribute("class", "searched-movie-poster");
         searchedPosterCard.src = imageUrl + searchedMovies[i].poster_path;
 
-        const movieTitleCard = document.createElement(
+        const tvShowTitleCard = document.createElement(
             "p"
         ) as HTMLParagraphElement;
-        movieTitleCard.setAttribute("class", "searched-movie-title");
-        movieTitleCard.innerHTML = searchedMovies[i].title;
-        const movieRatingCard = document.createElement(
+        tvShowTitleCard.setAttribute("class", "searched-movie-title");
+        tvShowTitleCard.innerHTML = searchedMovies[i].title;
+        const tvShowRatingCard = document.createElement(
             "p"
         ) as HTMLParagraphElement;
-        movieRatingCard.innerHTML = `Rating: ${searchedMovies[
+        tvShowRatingCard.innerHTML = `Rating: ${searchedMovies[
             i
         ].rating.toString()}`;
 
         maincontentArea.appendChild(searchedMovieCard);
         searchedMovieCard.appendChild(searchedPosterCard);
-        searchedMovieCard.appendChild(movieTitleCard);
-        searchedMovieCard.appendChild(movieRatingCard);
+        searchedMovieCard.appendChild(tvShowTitleCard);
+        searchedMovieCard.appendChild(tvShowRatingCard);
 
         searchedPosterCard.addEventListener("click", (event) => {
             event.preventDefault();
@@ -345,21 +345,23 @@ function printTopMovies() {
     maincontentArea.innerHTML = "";
 
     for (let i: number = 0; i < topMovies.length; i++) {
-        const topMoviesCard = document.createElement("section") as HTMLElement;
-        topMoviesCard.setAttribute("id", "top-movie-card");
-        const topMoviePosterCard = new Image();
-        topMoviePosterCard.src = imageUrl + topMovies[i].poster_path;
-        topMoviePosterCard.setAttribute("class", "top-movie-poster");
+        const toptvShowsCard = document.createElement("section") as HTMLElement;
+        toptvShowsCard.setAttribute("id", "top-movie-card");
+        const toptvShowsPosterCard = new Image();
+        toptvShowsPosterCard.src = imageUrl + topMovies[i].poster_path;
+        toptvShowsPosterCard.setAttribute("class", "top-movie-poster");
 
-        const movieTitleCard = document.createElement(
+        const tvShowTitleCard = document.createElement(
             "p"
         ) as HTMLParagraphElement;
-        movieTitleCard.setAttribute("class", "searched-movie-title");
-        movieTitleCard.innerHTML = topMovies[i].title;
-        const movieRatingCard = document.createElement(
+        tvShowTitleCard.setAttribute("class", "searched-movie-title");
+        tvShowTitleCard.innerHTML = topMovies[i].title;
+        const tvShowRatingCard = document.createElement(
             "p"
         ) as HTMLParagraphElement;
-        movieRatingCard.innerHTML = `Rating: ${topMovies[i].rating.toString()}`;
+        tvShowRatingCard.innerHTML = `Rating: ${topMovies[
+            i
+        ].rating.toString()}`;
 
         const addToWatchlistButton = document.createElement(
             "input"
@@ -368,13 +370,13 @@ function printTopMovies() {
         addToWatchlistButton.setAttribute("type", "submit");
         addToWatchlistButton.setAttribute("value", "Add to Watchlist");
 
-        maincontentArea.appendChild(topMoviesCard);
-        topMoviesCard.appendChild(topMoviePosterCard);
-        topMoviesCard.appendChild(movieTitleCard);
-        topMoviesCard.appendChild(movieRatingCard);
-        topMoviesCard.appendChild(addToWatchlistButton);
+        maincontentArea.appendChild(toptvShowsCard);
+        toptvShowsCard.appendChild(toptvShowsPosterCard);
+        toptvShowsCard.appendChild(tvShowTitleCard);
+        toptvShowsCard.appendChild(tvShowRatingCard);
+        toptvShowsCard.appendChild(addToWatchlistButton);
 
-        topMoviePosterCard.addEventListener("click", (event) => {
+        toptvShowsPosterCard.addEventListener("click", (event) => {
             event.preventDefault();
             moviePage.push(topMovies[i]);
             printMoviePage(topMovies[i]);
@@ -397,11 +399,13 @@ function printMoviePage(moviePage: movie) {
     const movepagePosterCard = new Image();
     movepagePosterCard.src = imageUrl + selectedMovie.poster_path;
     movepagePosterCard.setAttribute("class", "page-movie-poster");
-    const movieTitleCard = document.createElement("p") as HTMLParagraphElement;
-    movieTitleCard.setAttribute("class", "top-movie-title");
-    movieTitleCard.innerHTML = selectedMovie.title;
-    const movieRatingCard = document.createElement("p") as HTMLParagraphElement;
-    movieRatingCard.innerHTML = `Rating: ${selectedMovie.rating.toString()}`;
+    const tvShowTitleCard = document.createElement("p") as HTMLParagraphElement;
+    tvShowTitleCard.setAttribute("class", "top-movie-title");
+    tvShowTitleCard.innerHTML = selectedMovie.title;
+    const tvShowRatingCard = document.createElement(
+        "p"
+    ) as HTMLParagraphElement;
+    tvShowRatingCard.innerHTML = `Rating: ${selectedMovie.rating.toString()}`;
 
     const movieReleaseDate = document.createElement(
         "p"
@@ -425,8 +429,8 @@ function printMoviePage(moviePage: movie) {
 
     maincontentArea.appendChild(moviePageCard);
     moviePageCard.appendChild(movepagePosterCard);
-    moviePageCard.appendChild(movieTitleCard);
-    moviePageCard.appendChild(movieRatingCard);
+    moviePageCard.appendChild(tvShowTitleCard);
+    moviePageCard.appendChild(tvShowRatingCard);
     moviePageCard.appendChild(movieReleaseDate);
     moviePageCard.appendChild(movieOverviewHeader);
     moviePageCard.appendChild(overview);
@@ -446,21 +450,21 @@ function printMovieNowPlayingMovies() {
     nowPlayingHeading.innerHTML = "Now Playing";
     nowPlayingHeading.setAttribute("class", "header-now-playing");
     for (let i: number = 0; i < nowPlayingMovies.length; i++) {
-        const moviesCard = document.createElement("section") as HTMLElement;
-        moviesCard.setAttribute("class", "now-playing-movie-card");
-        const moviePosterCard = new Image();
-        moviePosterCard.setAttribute("class", "now-playing-movie-poster");
-        moviePosterCard.src = imageUrl + nowPlayingMovies[i].poster_path;
+        const tvShowsCard = document.createElement("section") as HTMLElement;
+        tvShowsCard.setAttribute("class", "now-playing-movie-card");
+        const tvShowsPosterCard = new Image();
+        tvShowsPosterCard.setAttribute("class", "now-playing-movie-poster");
+        tvShowsPosterCard.src = imageUrl + nowPlayingMovies[i].poster_path;
 
-        const movieTitleCard = document.createElement(
+        const tvShowTitleCard = document.createElement(
             "p"
         ) as HTMLParagraphElement;
-        movieTitleCard.setAttribute("class", "movie-title");
-        movieTitleCard.innerHTML = nowPlayingMovies[i].title;
-        const movieRatingCard = document.createElement(
+        tvShowTitleCard.setAttribute("class", "movie-title");
+        tvShowTitleCard.innerHTML = nowPlayingMovies[i].title;
+        const tvShowRatingCard = document.createElement(
             "p"
         ) as HTMLParagraphElement;
-        movieRatingCard.innerHTML = `Rating: ${nowPlayingMovies[
+        tvShowRatingCard.innerHTML = `Rating: ${nowPlayingMovies[
             i
         ].rating.toString()}`;
 
@@ -472,18 +476,18 @@ function printMovieNowPlayingMovies() {
         addToWatchlistButton.setAttribute("value", "Add to Watchlist");
 
         maincontentArea.appendChild(nowPlayingHeading);
-        maincontentArea.appendChild(moviesCard);
-        moviesCard.appendChild(moviePosterCard);
-        moviesCard.appendChild(movieTitleCard);
-        moviesCard.appendChild(movieRatingCard);
-        moviesCard.appendChild(addToWatchlistButton);
+        maincontentArea.appendChild(tvShowsCard);
+        tvShowsCard.appendChild(tvShowsPosterCard);
+        tvShowsCard.appendChild(tvShowTitleCard);
+        tvShowsCard.appendChild(tvShowRatingCard);
+        tvShowsCard.appendChild(addToWatchlistButton);
 
         addToWatchlistButton.addEventListener("click", () => {
             const index = nowPlayingMovies[i];
             addMovie(index);
         });
 
-        moviePosterCard.addEventListener("click", (event) => {
+        tvShowsPosterCard.addEventListener("click", (event) => {
             event.preventDefault();
             moviePage.push(nowPlayingMovies[i]);
             printMoviePage(nowPlayingMovies[i]);
@@ -507,28 +511,33 @@ async function getTopTvShows() {
             release: data.results[i].release,
             overview: data.results[i].overview,
         };
-        tpTvShows.push(newtopTvShows);
-        printTopTvShows(newtopTvShows);
+        topTvShows.push(newtopTvShows);
+        printTopTvShows();
     }
 
-    function printTopTvShows(data: movie) {
+    function printTopTvShows() {
         maincontentArea.innerHTML = "";
-        for (let i: number = 0; i < tpTvShows.length; i++) {
-            const moviesCard = document.createElement("section") as HTMLElement;
-            moviesCard.setAttribute("id", "movie-card");
-            const moviePosterCard = new Image();
-            moviePosterCard.src = imageUrl + data.poster_path;
-            moviePosterCard.setAttribute("class", "movie-poster");
+        console.log(data);
+        for (let i: number = 0; i < topTvShows.length; i++) {
+            const tvShowsCard = document.createElement(
+                "section"
+            ) as HTMLElement;
+            tvShowsCard.setAttribute("id", "movie-card");
+            const tvShowsPosterCard = new Image();
+            tvShowsPosterCard.src = imageUrl + topTvShows[i].poster_path;
+            tvShowsPosterCard.setAttribute("class", "movie-poster");
 
-            const movieTitleCard = document.createElement(
+            const tvShowTitleCard = document.createElement(
                 "p"
             ) as HTMLParagraphElement;
-            movieTitleCard.setAttribute("class", "movie-title");
-            movieTitleCard.innerHTML = data.title;
-            const movieRatingCard = document.createElement(
+            tvShowTitleCard.setAttribute("class", "movie-title");
+            tvShowTitleCard.innerHTML = topTvShows[i].title;
+            const tvShowRatingCard = document.createElement(
                 "p"
             ) as HTMLParagraphElement;
-            movieRatingCard.innerHTML = `Rating: ${data.rating.toString()}`;
+            tvShowRatingCard.innerHTML = `Rating: ${topTvShows[
+                i
+            ].rating.toString()}`;
 
             const addToWatchlistButton = document.createElement(
                 "input"
@@ -537,14 +546,14 @@ async function getTopTvShows() {
             addToWatchlistButton.setAttribute("type", "submit");
             addToWatchlistButton.setAttribute("value", "Add to Watchlist");
 
-            maincontentArea.appendChild(moviesCard);
-            moviesCard.appendChild(moviePosterCard);
-            moviesCard.appendChild(movieTitleCard);
-            moviesCard.appendChild(movieRatingCard);
-            moviesCard.appendChild(addToWatchlistButton);
+            maincontentArea.appendChild(tvShowsCard);
+            tvShowsCard.appendChild(tvShowsPosterCard);
+            tvShowsCard.appendChild(tvShowTitleCard);
+            tvShowsCard.appendChild(tvShowRatingCard);
+            tvShowsCard.appendChild(addToWatchlistButton);
 
             addToWatchlistButton.addEventListener("click", () => {
-                const index = tpTvShows[i];
+                const index = topTvShows[i];
                 addMovie(index);
             });
         }
