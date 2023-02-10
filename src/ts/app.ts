@@ -78,21 +78,6 @@ const userWatchList: movie[] = [];
 const nowPlayingMovies: movie[] = [];
 let moviePage: movie[] = [];
 
-// function textColorByValue(value: movie["rating"]){
-
-//     let textColor: string;
-//     const rating =value;
-
-//     if (rating > 7) {
-//       textColor = 'green';
-//     } else if (rating < 6) {
-//       textColor = 'yellow';
-//     } else {
-//       textColor = 'red';
-//     }
-
-// }
-
 async function getNowPlayingMovies() {
     const response = await fetch(nowPlayingUrl + apiKey);
     const data = await response.json();
@@ -145,7 +130,6 @@ async function getSearchedMovie() {
 
 submitButton.addEventListener("click", (event) => {
     event.preventDefault();
-    console.log(searchedMovies);
     getSearchedMovie();
 });
 
@@ -524,29 +508,27 @@ async function getTopTvShows() {
             overview: data.results[i].overview,
         };
         tpTvShows.push(newtopTvShows);
-        printMovie(newtopTvShows);
+        printTopTvShows(newtopTvShows);
     }
 
-    function printMovie(data: movie) {
+    function printTopTvShows(data: movie) {
         maincontentArea.innerHTML = "";
         for (let i: number = 0; i < tpTvShows.length; i++) {
             const moviesCard = document.createElement("section") as HTMLElement;
             moviesCard.setAttribute("id", "movie-card");
             const moviePosterCard = new Image();
-            moviePosterCard.src = imageUrl + tpTvShows[i].poster_path;
+            moviePosterCard.src = imageUrl + data.poster_path;
             moviePosterCard.setAttribute("class", "movie-poster");
 
             const movieTitleCard = document.createElement(
                 "p"
             ) as HTMLParagraphElement;
             movieTitleCard.setAttribute("class", "movie-title");
-            movieTitleCard.innerHTML = tpTvShows[i].title;
+            movieTitleCard.innerHTML = data.title;
             const movieRatingCard = document.createElement(
                 "p"
             ) as HTMLParagraphElement;
-            movieRatingCard.innerHTML = `Rating: ${tpTvShows[
-                i
-            ].rating.toString()}`;
+            movieRatingCard.innerHTML = `Rating: ${data.rating.toString()}`;
 
             const addToWatchlistButton = document.createElement(
                 "input"

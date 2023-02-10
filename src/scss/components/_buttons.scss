@@ -20,9 +20,10 @@
             cursor: pointer;
 }
 
-@mixin buttonStyle{
+@mixin searchButtonStyle(){
     color: $textColorLit;
     background-color: transparent;
+    border: none;
     cursor: pointer;
 
 }

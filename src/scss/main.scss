@@ -31,9 +31,10 @@ body{
     .nav-bar{
         @include flexCenter();
         
-            #home, #top-movies, #top-tv, #trending-tab, .submit-btn{
+            #home, #top-movies, #top-tv, #trending-tab{
               right: 0;
               left: 0;
+              
               &:hover{
                 cursor: pointer;
                 transform: scale(1.1);
@@ -45,12 +46,10 @@ body{
     
             }
             .submit-btn{
-                @include buttonStyle();
+                @include searchButtonStyle();
+                transform: translateY(12);
+                transform: translateX(-5);
                 
-                &:hover{
-                    transform: scale(1.3);
-                    transition-duration: 500ms;
-                }
        
            
         }
