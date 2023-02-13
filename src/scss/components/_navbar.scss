@@ -12,14 +12,12 @@
     width: 100vw;
     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
     background-color: $primaryColor;
-    // background-image: url("https://windowscustomization.com/wp-content/uploads/2018/10/cyberpunk-night-city.gif");  
-    // background-size: cover;
-    // background-position-y: 800px;
-    // border-radius: 5;
+   
     
 }
 
 @mixin flexCenterMobile(){
+    background-color: $primaryColor;
     display: flex;
     flex-wrap:wrap; 
     justify-content: center;
