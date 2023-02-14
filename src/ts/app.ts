@@ -356,6 +356,10 @@ function printSearchResults() {
 
         searchedPosterCard.addEventListener("click", (event) => {
             event.preventDefault();
+            const id = searchedMovies[i].id;
+            const parsedId = Number(id);
+
+            getCredits(parsedId);
             moviePage.push(searchedMovies[i]);
             printMoviePage(searchedMovies[i]);
         });
@@ -409,9 +413,24 @@ function printTopMovies() {
         const topMoviesRatingCard = document.createElement(
             "p"
         ) as HTMLParagraphElement;
-        topMoviesRatingCard.innerHTML = `Rating: ${topMovies[
-            i
-        ].rating.toString()}`;
+        topMoviesRatingCard.innerHTML = "Rating:";
+
+        const ratingValue = document.createElement("p") as HTMLParagraphElement;
+        ratingValue.innerHTML = topMovies[i].rating.toString();
+
+        changeColorByValue(topMovies[i].rating.toString());
+
+        function changeColorByValue(value: string) {
+            if (parseInt(value) >= 6.5) {
+                ratingValue.style.color = "lightgreen";
+            }
+            if (parseInt(value) <= 6.4 && parseInt(value) >= 5.6) {
+                ratingValue.style.color = "yellow";
+            }
+            if (parseInt(value) <= 5.5) {
+                ratingValue.style.color = "Red";
+            }
+        }
 
         const addToWatchlistButton = document.createElement(
             "input"
@@ -424,10 +443,17 @@ function printTopMovies() {
         topMoviesCard.appendChild(topMoviesPosterCard);
         topMoviesCard.appendChild(topMoviesTitle);
         topMoviesCard.appendChild(topMoviesRatingCard);
+        topMoviesCard.appendChild(ratingValue);
         topMoviesCard.appendChild(addToWatchlistButton);
 
         topMoviesPosterCard.addEventListener("click", (event) => {
             event.preventDefault();
+            const id = nowPlayingMovies[i].id;
+            const parsedId = Number(id);
+
+            console.log(parsedId);
+
+            getCredits(parsedId);
             moviePage.push(topMovies[i]);
             printMoviePage(topMovies[i]);
         });
@@ -487,6 +513,9 @@ function printMoviePage(moviePage: movie) {
     const overview = document.createElement("p") as HTMLParagraphElement;
     overview.innerHTML = moviePage.overview?.toString() || "";
 
+    const cast = document.createElement("p") as HTMLParagraphElement;
+    cast.innerHTML = "Cast";
+
     const addToWatchlistButton = document.createElement(
         "input"
     ) as HTMLInputElement;
@@ -504,12 +533,6 @@ function printMoviePage(moviePage: movie) {
     moviePageCard.appendChild(movieOverviewHeader);
     moviePageCard.appendChild(overview);
 
-    for (let i: number = 0; i < movieCredits.length; i++) {
-        console.log("hej");
-        const movieCast = document.createElement("p") as HTMLParagraphElement;
-        movieCast.textContent = movieCredits[i].cast.toString();
-        moviePageCard.appendChild(movieCast);
-    }
     moviePageCard.appendChild(addToWatchlistButton);
 
     addToWatchlistButton.addEventListener("click", () => {
@@ -578,7 +601,6 @@ function printMovieNowPlayingMovies() {
             event.preventDefault();
             const id = nowPlayingMovies[i].id;
             const parsedId = Number(id);
-
             getCredits(parsedId);
             moviePage.push(nowPlayingMovies[i]);
             printMoviePage(nowPlayingMovies[i]);
@@ -627,10 +649,26 @@ async function getTopTvShows() {
             const tvShowRatingCard = document.createElement(
                 "p"
             ) as HTMLParagraphElement;
-            tvShowRatingCard.innerHTML = `Rating: ${topTvShows[
-                i
-            ].rating.toString()}`;
+            tvShowRatingCard.innerHTML = "Rating:";
 
+            const ratingValue = document.createElement(
+                "p"
+            ) as HTMLParagraphElement;
+            ratingValue.innerHTML = topTvShows[i].rating.toString();
+
+            changeColorByValue(topTvShows[i].rating.toString());
+
+            function changeColorByValue(value: string) {
+                if (parseInt(value) >= 6.5) {
+                    ratingValue.style.color = "lightgreen";
+                }
+                if (parseInt(value) <= 6.4 && parseInt(value) >= 5.6) {
+                    ratingValue.style.color = "yellow";
+                }
+                if (parseInt(value) <= 5.5) {
+                    ratingValue.style.color = "Red";
+                }
+            }
             const addToWatchlistButton = document.createElement(
                 "input"
             ) as HTMLInputElement;
@@ -642,6 +680,7 @@ async function getTopTvShows() {
             tvShowCard.appendChild(tvShowsPosterCard);
             tvShowCard.appendChild(tvShowTitleCard);
             tvShowCard.appendChild(tvShowRatingCard);
+            tvShowCard.appendChild(ratingValue);
             tvShowCard.appendChild(addToWatchlistButton);
 
             tvShowsPosterCard.addEventListener("click", (event) => {
@@ -674,7 +713,24 @@ function printTvShowPage(tvShowPage: movie) {
     const tvShowRatingCard = document.createElement(
         "p"
     ) as HTMLParagraphElement;
-    tvShowRatingCard.innerHTML = `Rating: ${selectedTvShow.rating.toString()}`;
+    tvShowRatingCard.innerHTML = "Rating:";
+
+    const ratingValue = document.createElement("p") as HTMLParagraphElement;
+    ratingValue.innerHTML = selectedTvShow.rating.toString();
+
+    changeColorByValue(selectedTvShow.rating.toString());
+
+    function changeColorByValue(value: string) {
+        if (parseInt(value) >= 6.5) {
+            ratingValue.style.color = "lightgreen";
+        }
+        if (parseInt(value) <= 6.4 && parseInt(value) >= 5.6) {
+            ratingValue.style.color = "yellow";
+        }
+        if (parseInt(value) <= 5.5) {
+            ratingValue.style.color = "Red";
+        }
+    }
 
     const tvShowReleaseDate = document.createElement(
         "p"
@@ -700,6 +756,7 @@ function printTvShowPage(tvShowPage: movie) {
     tvShowPageCard.appendChild(tvShowPosterCard);
     mainContentHeader.innerHTML = selectedTvShow.title;
     tvShowPageCard.appendChild(tvShowRatingCard);
+    tvShowPageCard.appendChild(ratingValue);
     tvShowPageCard.appendChild(tvShowReleaseDate);
     tvShowPageCard.appendChild(tvShowOverviewHeader);
     tvShowPageCard.appendChild(overview);
@@ -713,9 +770,9 @@ function printTvShowPage(tvShowPage: movie) {
 
 async function getCredits(id: number) {
     movieCredits.length = 0;
+
     const response = await fetch(movieUrl + id + creditsUrl + apiKey);
     const data = await response.json();
-
     const castMembers: string[] = [];
     const crewMembers: string[] = [];
 
@@ -733,5 +790,4 @@ async function getCredits(id: number) {
         crew: crewMembers,
     };
     movieCredits.push(newCredits);
-    console.log(movieCredits);
 }
