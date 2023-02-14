@@ -22,15 +22,15 @@ body{
 
 
 .flex{
-    @include flexCenter();
-   
+    
+    
     
     #watchlist-button{
         display: none;
       }
     .nav-bar{
         @include flexCenter();
-        
+        border-bottom: 2px solid $hightlightColor;
             #home, #top-movies, #top-tv, #trending-tab{
               right: 0;
               left: 0;
@@ -76,6 +76,7 @@ body{
     
     .content-main, .content-trending, .content-watchlist{
         background: $primaryColorDarker;
+       
         border-radius: 10px;
         margin-top: 50;
         margin-left: 1;
@@ -119,8 +120,8 @@ body{
             
     }
     #trending-add:hover{
-        color: white;
-        background-color: rgb(91, 255, 91);
+        color: $textColorLit;
+        background-color: $hightlightColor;
         transform: scale(1.05);
             transition-duration: 200ms;
     }
@@ -151,8 +152,8 @@ body{
             @include addToWatchListButton();
             
             &:hover{
-                color: white;
-                background-color: rgb(91, 255, 91);
+                color: $textColorDark;
+                background-color: $hightlightColor;
                 transform: scale(1.05);
                 transition-duration: 200ms;
                 
@@ -281,6 +282,7 @@ body{
         left: 0;
         background: $secondaryColor;
         width: 100vw;
+        border-bottom: 2px solid $hightlightColor;
         
         .nav-bar{
             @include flexCenterMobile();
