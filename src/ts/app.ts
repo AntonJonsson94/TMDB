@@ -118,9 +118,9 @@ getNowPlayingMovies();
 async function getSearchedMovie() {
     searchedMovies.length = 0;
     maincontentArea.innerHTML = "";
+    mainContentHeader.innerHTML = "";
     const inputField = document.querySelector("#input") as HTMLInputElement;
     const searchedMovie = inputField.value;
-    mainContentHeader.innerHTML = `Search results for "${searchedMovie}"`;
     const response = await fetch(searchUrl + apiKey + queryUrl + searchedMovie);
     const data = await response.json();
 
@@ -140,6 +140,10 @@ async function getSearchedMovie() {
         };
         searchedMovies.push(newSearchedMovies);
         printSearchResults();
+        mainContentHeader.innerHTML = `Your search for ${searchedMovie} got ${searchedMovies.length} matches`;
+    }
+    if (searchedMovies.length === 0) {
+        mainContentHeader.innerHTML = `Your search for "${searchedMovie}" yielded no results`;
     }
 }
 
@@ -243,20 +247,17 @@ function addMovie(addedWatchListMovie: movie) {
 function printWatchList() {
     watchlistTab.innerHTML = "";
 
-    //för varje film i listan
     for (let i: number = 0; i < userWatchList.length; i++) {
         const currentMovie = userWatchList[i];
-        //skapa kort och sätt klass och id
+
         let watchListCard = document.createElement("section") as HTMLElement;
         watchListCard.setAttribute("class", "watchlist-card");
         watchListCard.id = "movie" + i;
 
-        //skapa bild och sätt klass och src
         const watchListPosterCard = new Image();
         watchListPosterCard.setAttribute("class", "watchlist-poster");
         watchListPosterCard.src = imageUrl + currentMovie.poster_path;
 
-        //skapa titel
         const watchListMovieTitle = document.createElement(
             "p"
         ) as HTMLParagraphElement;
