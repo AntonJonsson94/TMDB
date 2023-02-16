@@ -1,7 +1,9 @@
+@use '../abstracts/fonts' as *;
+
 @mixin gridLayout(){
     display: grid;
     grid-template-columns: 20vw 60vw 20vw;
-    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana;
+    @include mainFont();
     height: 100%;
     
     

@@ -1,2 +1,11 @@
+@use './colors' as *;
 
-
+@mixin headerStyle(){
+    background: $hightlightColor;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-size: x-large;
+};
+@mixin mainFont(){
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}

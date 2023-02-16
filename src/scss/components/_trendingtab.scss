@@ -1,4 +1,8 @@
+@use '../abstracts/colors' as *;
+@use '../abstracts/fonts' as *;
+
 .content .trending-buttons{
-    color: aqua;
+    color: $textColorLit;
+
     
 }

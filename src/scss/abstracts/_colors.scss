@@ -6,10 +6,5 @@ $textColorDark: #0d253f;
 $textColorLit: white;
 
 
-@mixin headerStyle(){
-        background: $hightlightColor;
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        font-size: x-large;
-};
+
 

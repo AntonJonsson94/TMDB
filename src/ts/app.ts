@@ -209,7 +209,8 @@ function printTrendingMovies() {
         addToWatchlistButton.addEventListener("click", () => {
             const index = trendingMovies[i];
             addToWatchlistButton.setAttribute("value", "Added to Watchlist!");
-            addToWatchlistButton.style.backgroundColor = "grey";
+            addToWatchlistButton.disabled = true;
+            addToWatchlistButton.style.backgroundColor = "lightgreen";
             addMovie(index);
         });
 
@@ -467,7 +468,6 @@ function printTopMovies() {
 
 function printMoviePage(moviePage: movie) {
     maincontentArea.innerHTML = "";
-
     const moviePageCard = document.createElement("section") as HTMLElement;
     moviePageCard.setAttribute("class", "moviePageCard");
 
@@ -511,10 +511,12 @@ function printMoviePage(moviePage: movie) {
     ) as HTMLParagraphElement;
     movieOverviewHeader.innerHTML = `Story Overview`;
     const overview = document.createElement("p") as HTMLParagraphElement;
+    overview.setAttribute("class", "overview");
     overview.innerHTML = moviePage.overview?.toString() || "";
 
-    const cast = document.createElement("p") as HTMLParagraphElement;
-    cast.innerHTML = "Cast";
+    // const movieCast = document.createElement("p") as HTMLParagraphElement;
+    // console.log(movieCredits);
+    // movieCast.innerHTML = movieCredits[0].cast[0];
 
     const addToWatchlistButton = document.createElement(
         "input"
@@ -525,8 +527,8 @@ function printMoviePage(moviePage: movie) {
     addToWatchlistButton.setAttribute("value", "Add to Watchlist");
 
     maincontentArea.appendChild(moviePageCard);
-    moviePageCard.appendChild(movepagePosterCard);
     mainContentHeader.innerHTML = moviePage.title;
+    moviePageCard.appendChild(movepagePosterCard);
     moviePageCard.appendChild(nowPlayingRatingCard);
     moviePageCard.appendChild(ratingValue);
     moviePageCard.appendChild(movieReleaseDate);
@@ -537,6 +539,9 @@ function printMoviePage(moviePage: movie) {
 
     addToWatchlistButton.addEventListener("click", () => {
         const index = moviePage;
+        addToWatchlistButton.setAttribute("value", "Added to Watchlist!");
+
+        addToWatchlistButton.style.backgroundColor = "lightgreen";
         addMovie(index);
     });
 }
@@ -762,14 +767,25 @@ function printTvShowPage(tvShowPage: movie) {
     tvShowPageCard.appendChild(overview);
     tvShowPageCard.appendChild(addToWatchlistButton);
 
+    if (userWatchList.find((movie) => movie.title === selectedTvShow.title)) {
+        addToWatchlistButton.setAttribute(
+            "value",
+            "Already in Your Watchlist!"
+        );
+        addToWatchlistButton.style.backgroundColor = "lightgreen";
+    }
+
     addToWatchlistButton.addEventListener("click", () => {
         const index = selectedTvShow;
+        addToWatchlistButton.setAttribute("value", "Added to Watchlist!");
+        addToWatchlistButton.style.backgroundColor = "lightgreen";
+
         addMovie(index);
     });
 }
 
 async function getCredits(id: number) {
-    movieCredits.length = 0;
+    movieCredits = [];
 
     const response = await fetch(movieUrl + id + creditsUrl + apiKey);
     const data = await response.json();
@@ -778,15 +794,14 @@ async function getCredits(id: number) {
 
     for (let i: number = 0; i < data.cast.length; i++) {
         castMembers.push(data.cast[i].name);
-
-        for (let j: number = 0; j < data.crew.length; j++) {
-            crewMembers.push(
-                `${data.crew[j].name} (${data.crew[j].known_for_department})`
-            );
-        }
+    }
+    for (let j: number = 0; j < data.crew.length; j++) {
+        crewMembers.push(
+            `${data.crew[j].name} (${data.crew[j].known_for_department})`
+        );
     }
     const newCredits = {
-        cast: [castMembers.toString()],
+        cast: castMembers,
         crew: crewMembers,
     };
     movieCredits.push(newCredits);
